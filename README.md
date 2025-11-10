@@ -215,6 +215,40 @@ O artifact `coverage-report` também é gerado pelo CI. Você pode baixar o SVG 
 
 ---
 
+## Métricas de cobertura (atual)
+
+As métricas abaixo foram extraídas do último relatório gerado em `Challenge.Test/TestResults/*/coverage.cobertura.xml`.
+
+- Coverage (linhas): 89.95% (lines-covered: 654 / lines-valid: 727)
+- Coverage (branches): 59.16% (branches-covered: 71 / branches-valid: 120)
+
+Nota: os valores podem variar conforme você executar a suíte de testes localmente ou quando o CI rodar. Para recomputar as métricas localmente a partir do arquivo `coverage.cobertura.xml` use uma destas opções:
+
+- Usando `xmlstarlet` (recomendado se instalado):
+
+```bash
+xmlstarlet sel -t -v "/coverage/@line-rate" Challenge.Test/TestResults/*/coverage.cobertura.xml
+xmlstarlet sel -t -v "/coverage/@branch-rate" Challenge.Test/TestResults/*/coverage.cobertura.xml
+```
+
+- Usando `xmllint` (se disponível):
+
+```bash
+xmllint --xpath 'string(/coverage/@line-rate)' Challenge.Test/TestResults/*/coverage.cobertura.xml
+xmllint --xpath 'string(/coverage/@branch-rate)' Challenge.Test/TestResults/*/coverage.cobertura.xml
+```
+
+- Usando `grep`/`sed` (alternativa simples):
+
+```bash
+grep -o "line-rate=\"[^"]*\"" Challenge.Test/TestResults/*/coverage.cobertura.xml | head -n1 | sed 's/line-rate="//;s/"//'
+grep -o "branch-rate=\"[^"]*\"" Challenge.Test/TestResults/*/coverage.cobertura.xml | head -n1 | sed 's/branch-rate="//;s/"//'
+```
+
+Interprete o resultado `line-rate` (valor entre 0 e 1) multiplicando por 100 para obter a porcentagem.
+
+---
+
 ## CI / Pipeline
 
 O workflow principal está em `.github/workflows/ci.yml` e executa:
