@@ -14,6 +14,10 @@ public class TaskRepository : Repository<Tasks>, ITaskRepository
 
     public async Task<IEnumerable<Tasks>> GetAllByUserIdAsync(Guid userId)
     {
-        return await _context.Set<Tasks>().Where(t => t.UserId == userId).ToListAsync();
+        return await _context.Set<Tasks>()
+            .Include(t => t.User)
+            .AsNoTracking()
+            .Where(t => t.UserId == userId)
+            .ToListAsync();
     }
 }

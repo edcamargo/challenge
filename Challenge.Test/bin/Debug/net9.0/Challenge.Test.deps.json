@@ -26,7 +26,7 @@
     "languageVersion": "13.0",
     "platform": "",
     "allowUnsafe": false,
-    "warningsAsErrors": false,
+    "warningsAsErrors": true,
     "optimize": false,
     "keyFile": "",
     "emitEntryPoint": true,

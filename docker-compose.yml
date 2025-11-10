@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Presentation.Api/Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    depends_on: []
+

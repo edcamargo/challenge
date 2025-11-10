@@ -1,0 +1,13 @@
+bin/
+obj/
+**/bin/
+**/obj/
+**/*.user
+**/*.suo
+**/*.log
+**/node_modules
+**/.vscode
+**/.idea
+Challenge.Test/
+*.db
+

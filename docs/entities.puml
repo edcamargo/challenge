@@ -1,0 +1,43 @@
+@startuml
+' Entities diagram for the Challenge solution
+skinparam classAttributeIconSize 0
+
+package "Domain.Entities" {
+  class User {
+    + Guid Id
+    + string Name
+    + Email Email
+    + DateTime CreatedAt
+  }
+
+  class Tasks {
+    + Guid Id
+    + string Title
+    + string? Description
+    + DateTime CreatedAt
+    + DateTime? DueDate
+    + Guid UserId
+    + bool IsCompleted
+    + MarkCompleted()
+    + MarkPending()
+  }
+}
+
+User "1" <-- "*" Tasks : has
+
+note right of User
+  ValueObject: Email
+  - Endereco : string
+  - EhValido()
+end note
+
+note left of Tasks
+  Validations:
+  - Title (required, 2..200)
+  - Description (max 1000)
+  - DueDate (if set, must be future)
+  - UserId (required)
+end note
+
+@enduml
+

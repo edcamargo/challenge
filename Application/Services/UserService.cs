@@ -4,7 +4,6 @@ using Domain.Entities;
 using Domain.Intefaces.Repositories;
 using Domain.Intefaces;
 using Application.Common;
-using System.Linq;
 
 namespace Application.Services;
 

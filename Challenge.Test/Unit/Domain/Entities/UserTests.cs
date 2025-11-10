@@ -1,7 +1,6 @@
 using Domain.Entities;
 using Domain.ValueObjects;
 using FluentAssertions;
-using Xunit;
 
 namespace Challenge.Test.Unit.Domain.Entities;
 

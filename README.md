@@ -1,819 +1,255 @@
-<div align="center">
+# Challenge — Gerenciamento de Tarefas
 
-# 🚀 Challenge API - Gerenciamento de Usuários
+[![CI](https://github.com/edcamargo/challenge/actions/workflows/ci.yml/badge.svg)](https://github.com/edcamargo/challenge/actions/workflows/ci.yml) [![Coverage](https://raw.githubusercontent.com/edcamargo/challenge/main/coverage-badge.svg)](coverage-report/index.html)
 
-[![.NET](https://img.shields.io/badge/.NET-9.0-512BD4?style=for-the-badge&logo=dotnet)](https://dotnet.microsoft.com/)
-[![C#](https://img.shields.io/badge/C%23-12.0-239120?style=for-the-badge&logo=csharp)](https://docs.microsoft.com/en-us/dotnet/csharp/)
-[![Tests](https://img.shields.io/badge/Tests-53%20Passing-success?style=for-the-badge&logo=xunit)](https://xunit.net/)
-[![Coverage](https://img.shields.io/badge/Coverage-95%25-brightgreen?style=for-the-badge&logo=codecov)](https://coverlet.io/)
-[![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
+> Nota: o coverage badge (`coverage-badge.svg`) será gerado automaticamente pelo workflow de CI e um Pull Request será criado (branch `ci/coverage-badge-<run_id>`) contendo o SVG atualizado. Revise e mescle o PR para publicar o novo badge no README. Se preferir, baixe o artifact `coverage-report` do run (Actions → Artifacts), extraia o SVG e comite manualmente no repositório.
 
-**API RESTful robusta para gerenciamento de usuários com Clean Architecture, Pattern Notification e 95% de cobertura de testes**
+Uma API em .NET 9 para gerenciamento de tarefas (Users + Tasks) construída com princípios de Clean Architecture: Domain, Application, Infrastructure e Presentation. Projetada para ser simples, testável e de fácil manutenção.
 
-[🎯 Features](#-features) • [🏗️ Arquitetura](#️-arquitetura) • [🧪 Testes](#-testes) • [🚀 Quick Start](#-quick-start) • [📚 Documentação](#-documentação)
-
-</div>
+- Linguagem: C# (.NET 9)
+- Testes: xUnit + FluentAssertions + NSubstitute
+- Persistência nos testes: EF Core InMemory
+- CI: GitHub Actions (build/test/coverage)
 
 ---
 
-## 📋 Índice
+## Sumário
 
-- [✨ Features](#-features)
-- [🏗️ Arquitetura](#️-arquitetura)
-- [🎨 Padrões de Projeto](#-padrões-de-projeto)
-- [🧪 Testes](#-testes)
-- [🚀 Quick Start](#-quick-start)
-- [📡 API Endpoints](#-api-endpoints)
-- [🔧 Tecnologias](#-tecnologias)
-- [📚 Documentação](#-documentação)
-- [👥 Contribuindo](#-contribuindo)
-
----
-
-## ✨ Features
-
-<table>
-<tr>
-<td width="50%">
-
-### 🎯 Core Features
-
-- ✅ **CRUD Completo de Usuários**
-- ✅ **Validação em Múltiplas Camadas**
-- ✅ **Pattern Notification**
-- ✅ **Railway-Oriented Programming**
-- ✅ **Repository + UnitOfWork**
-- ✅ **API Response Padronizada**
-
-</td>
-<td width="50%">
-
-### 🛡️ Qualidade
-
-- ✅ **95% de Cobertura de Testes**
-- ✅ **53 Testes (Unit + Integration)**
-- ✅ **Zero Erros de Build**
-- ✅ **Clean Architecture**
-- ✅ **SOLID Principles**
-- ✅ **Documentação Completa**
-
-</td>
-</tr>
-</table>
+- [Visão geral](#visão-geral)
+- [Status / Badges](#status--badges)
+- [Arquitetura & Diagramas](#arquitetura--diagramas)
+- [Como rodar (rápido)](#como-rodar-rápido)
+  - [Rodar local (.NET)](#rodar-local-net)
+  - [Rodar com Docker](#rodar-com-docker)
+- [Endpoints principais (exemplos)](#endpoints-principais-exemplos)
+  - [Users](#users)
+  - [Tasks](#tasks)
+- [Padronização de respostas (ApiResponse)](#padronização-de-respostas-apiresponse)
+- [Testes e cobertura](#testes-e-cobertura)
+- [CI / Pipeline](#ci--pipeline)
+- [Contribuição](#contribuição)
 
 ---
 
-## 🏗️ Arquitetura
+## Visão geral
 
-A aplicação segue os princípios de **Clean Architecture**, garantindo separação de responsabilidades e independência de frameworks.
+A aplicação é organizada por camadas:
 
-```mermaid
-graph TB
-    subgraph "Presentation Layer"
-        API[Controllers<br/>🎮]
-        Extensions[Extension Methods<br/>🔧]
-    end
-    
-    subgraph "Application Layer"
-        Services[Services<br/>⚙️]
-        DTOs[DTOs<br/>📦]
-        AppCommon[ApiResponse<br/>📨]
-    end
-    
-    subgraph "Domain Layer"
-        Entities[Entities<br/>👤]
-        ValueObjects[Value Objects<br/>💎]
-        Validators[Validators<br/>✅]
-    end
-    
-    subgraph "Infrastructure Layer"
-        Repositories[Repositories<br/>💾]
-        UnitOfWork[Unit of Work<br/>🔄]
-        DataContext[EF Core Context<br/>🗄️]
-    end
-    
-    API --> Services
-    API --> Extensions
-    Services --> Entities
-    Services --> Repositories
-    Services --> DTOs
-    Services --> AppCommon
-    Repositories --> DataContext
-    Repositories --> UnitOfWork
-    Extensions --> AppCommon
-    
-    style API fill:#e1f5ff
-    style Services fill:#fff4e1
-    style Entities fill:#e8f5e9
-    style Repositories fill:#f3e5f5
-```
+- Domain: Entidades, ValueObjects, validações e regras de negócio.
+- Application: DTOs, Services (casos de uso), interfaces e mapeamentos.
+- InfraStructure: Implementações de repositórios, DataContext (EF Core) e IoC.
+- Presentation: API (controllers), middlewares, mapeamentos de resposta.
 
-### 📂 Estrutura de Pastas
-
-```
-📦 challenge/
-├── 🎨 Presentation.Api/          # Controllers, Middlewares, Extensions
-│   ├── Controllers/               # Endpoints REST
-│   ├── Extensions/                # ApiResponse Extensions (Map, ToActionResult)
-│   └── Common/                    # Tipos comuns da API
-│
-├── ⚙️ Application/                # Casos de Uso, Serviços
-│   ├── Services/                  # Lógica de negócio
-│   ├── Dtos/                      # Data Transfer Objects
-│   ├── Common/                    # ApiResponse<T>, ApiError (envelopes de resposta)
-│   └── Interfaces/                # Contratos de serviços
-│
-├── 💎 Domain/                     # Entidades, Value Objects, Regras
-│   ├── Entities/                  # User (entidade raiz)
-│   ├── ValueObjects/              # Email, CPF, etc.
-│   ├── Common/                    # Notifiable, Notification
-│   ├── Interfaces/                # IRepository<T>, IUnitOfWork
-│   └── Validations/               # Validadores FluentValidation
-│
-├── 🗄️ InfraStructure.Data/        # Persistência, EF Core
-│   ├── Context/                   # DbContext
-│   ├── Repositories/              # Implementações concretas
-│   └── UnitOfWork.cs              # Controle de transações
-│
-├── 🔧 InfraStructure.CrossCutting/ # Validações, Helpers
-├── 🎯 InfraStructure.Ioc/         # Dependency Injection
-└── 🧪 Challenge.Test/             # Testes Unitários e Integração
-    ├── Unit/                      # 47 testes unitários
-    │   ├── Domain/                # Entities, ValueObjects, ApiResponse
-    │   ├── Application/           # Services
-    │   └── Presentation/          # Extensions
-    └── Integration/               # 6 testes de integração
-        └── Controllers/           # Testes E2E dos endpoints
-```
+Principais decisões:
+- Notification pattern (ApiResponse/ApiError) para retornar validações/erros sem lançar exceções.
+- Repositório genérico + UnitOfWork para controlar persistência.
+- Testes automatizados (unit + integration) com cobertura elevada.
 
 ---
 
-## 🎨 Padrões de Projeto
+## Arquitetura & Diagramas
 
-### 1️⃣ **Pattern Notification**
+- Diagrama da arquitetura: `docs/architecture.puml` / `docs/architecture.svg`
+- Diagrama das entidades: `docs/entities.puml` / `docs/entities.svg`
 
-Elimina exceções para validações, acumulando erros em um objeto `ApiResponse<T>`:
+(Se os SVGs não estiverem no repositório, gere com PlantUML ou use a extensão do seu editor.)
 
-```csharp
-// ❌ Antes (com exceções)
-if (string.IsNullOrEmpty(email))
-    throw new ValidationException("Email obrigatório");
+Exemplo rápido (Entities):
 
-// ✅ Depois (com Notification)
-return ApiResponse<User>.ValidationFailure(validationResult);
-```
-
-**Benefícios:**
-- 🎯 Múltiplos erros retornados de uma vez
-- 🚀 Melhor performance (sem stack unwinding)
-- 📦 Resposta estruturada e consistente
+![Entities diagram](docs/entities.svg)
 
 ---
 
-### 2️⃣ **Railway-Oriented Programming**
+## Como rodar — rápido
 
-Fluxo de dados com propagação automática de erros:
+Requisitos: .NET 9 SDK e (opcional) Docker.
 
-```csharp
-// Método unificado: transforma E converte em uma única chamada
-return response.ToActionResult(UserReponseDto.FromEntity);
-```
-
-**Fluxo:**
-```
-Service → ApiResponse<User> → ToActionResult(mapper) → IActionResult
-            ↓ (erro)              ↓ (propaga erro)      ↓ (400/404)
-            ↓ (sucesso)           ↓ (mapeia + OK)       ↓ (200)
-```
-
----
-
-### 3️⃣ **Repository + Unit of Work**
-
-Abstração de persistência com controle transacional:
-
-```csharp
-// Repository genérico
-public interface IRepository<T> where T : class
-{
-    Task<T> AddAsync(T entity);
-    Task<T> UpdateAsync(T entity);
-    Task<IEnumerable<T>> GetAllAsync();
-    Task<T?> GetByIdAsync(Guid id);
-}
-
-// Unit of Work
-public interface IUnitOfWork
-{
-    Task<int> SaveChangesAsync();
-}
-```
-
----
-
-### 4️⃣ **Extension Methods Unificados**
-
-```csharp
-// Conversão direta com mapeamento (funciona para objeto único ou coleção)
-response.ToActionResult(UserDto.FromEntity)
-
-// Criar recurso com mapeamento
-response.ToCreatedAtActionResult(
-    nameof(GetById), 
-    UserDto.FromEntity, 
-    dto => new { id = dto.Id })
-
-// No Content (sem dados)
-response.ToNoContentResult()
-
-// Versões assíncronas disponíveis
-await response.ToActionResultAsync()
-await response.ToCreatedAtActionResultAsync(...)
-await response.ToNoContentResultAsync()
-```
-
----
-
-### 5️⃣ **API Response Padronizada**
-
-Toda resposta segue o mesmo formato:
-
-```json
-// ✅ Sucesso
-{
-  "data": {
-    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-    "name": "John Doe",
-    "email": "john@example.com"
-  },
-  "erros": []
-}
-
-// ❌ Erro
-{
-  "data": null,
-  "erros": [
-    {
-      "statusCode": 400,
-      "message": "E-mail já cadastrado.",
-      "key": "Email"
-    }
-  ]
-}
-```
-
----
-
-## 🧪 Testes
-
-### 📊 Cobertura de Testes
-
-<div align="center">
-
-| Camada | Testes | Cobertura | Status |
-|--------|--------|-----------|--------|
-| **Domain** | 23 | 98% | ✅ |
-| **Application** | 14 | 95% | ✅ |
-| **Presentation** | 16 | 95% | ✅ |
-| **Integration** | 6 | 90% | ✅ |
-| **TOTAL** | **53** | **~95%** | ✅ |
-
-</div>
-
-### 🎯 Testes Unitários (47)
-
-#### Domain Layer (23 testes)
-```
-✅ ApiResponseTests (10 testes)
-   - Success, Failure, ValidationFailure
-   - NotFound, Error
-   - Cenários com diferentes status codes
-
-✅ UserTests (5 testes)
-   - Criação, validação
-   - Propriedades
-
-✅ EmailTests (8 testes)
-   - Validação de formato
-   - Equals, GetHashCode
-   - Casos válidos e inválidos
-```
-
-#### Application Layer (14 testes)
-```
-✅ UserServiceTests (14 testes)
-   - Add: sucesso, validações, email duplicado
-   - Update: sucesso, not found, validações
-   - GetById: sucesso, not found
-   - Delete: sucesso, not found
-   - GetAll: com dados, vazio
-```
-
-#### Presentation Layer (16 testes)
-```
-✅ ApiResponseExtensionsTests (16 testes)
-   - Map, MapCollection (transformações)
-   - ToActionResult, ToCreatedAtActionResult
-   - ToNoContentResult
-   - Versões assíncronas (MapAsync, etc.)
-```
-
-### 🔗 Testes de Integração (6)
-
-```
-✅ UsersControllerTests
-   - POST /api/users (criação)
-   - GET /api/users (listagem)
-   - GET /api/users/{id} (busca)
-   - PUT /api/users/{id} (atualização)
-   - DELETE /api/users/{id} (remoção)
-   - Validações e cenários de erro
-```
-
-### 🚀 Executando os Testes
+### Rodar local (.NET)
 
 ```bash
-# Todos os testes
-dotnet test
-
-# Apenas unitários
-dotnet test --filter "FullyQualifiedName~Unit"
-
-# Apenas integração
-dotnet test --filter "FullyQualifiedName~Integration"
-
-# Com cobertura
-dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=lcov
-
-# Específicos
-dotnet test --filter "Name~UserServiceTests"
-```
-
----
-
-## 🚀 Quick Start
-
-### 📋 Pré-requisitos
-
-- [.NET 9 SDK](https://dotnet.microsoft.com/download/dotnet/9.0)
-- [SQL Server](https://www.microsoft.com/sql-server) ou SQL Server LocalDB
-- IDE: [Visual Studio 2022](https://visualstudio.microsoft.com/), [Rider](https://www.jetbrains.com/rider/) ou [VS Code](https://code.visualstudio.com/)
-
-### ⚡ Instalação e Execução
-
-```bash
-# 1. Clone o repositório
-git clone <repository-url>
-cd challenge
-
-# 2. Restaure as dependências
+# restaurar e compilar
 dotnet restore
+dotnet build -c Debug
 
-# 3. Configure a connection string
-# Edite appsettings.json em Presentation.Api/
-
-# 4. Execute as migrations
-dotnet ef database update --project InfraStructure.Data --startup-project Presentation.Api
-
-# 5. Execute a aplicação
-dotnet run --project Presentation.Api
-
-# 6. Acesse o Swagger
-# https://localhost:5001/swagger
+# rodar API (Presentation.Api)
+cd Presentation.Api
+dotnet run --urls "http://localhost:5000"
 ```
+Abra `http://localhost:5000/swagger/index.html` para explorar a API (development).
 
-### 🐳 Docker (Opcional)
+### Rodar com Docker
+
+Build da imagem (a partir da raiz do repo):
 
 ```bash
-# Build da imagem
-docker build -t challenge-api .
-
-# Run do container
-docker run -p 5000:80 challenge-api
+docker build -f Presentation.Api/Dockerfile -t edcamargo/challenge-api:local .
 ```
 
----
-
-## 📡 API Endpoints
-
-### 👤 Usuários
-
-<table>
-<tr>
-<th>Método</th>
-<th>Endpoint</th>
-<th>Descrição</th>
-<th>Status</th>
-</tr>
-
-<tr>
-<td><code>POST</code></td>
-<td><code>/api/users</code></td>
-<td>Criar usuário</td>
-<td><code>201</code></td>
-</tr>
-
-<tr>
-<td><code>GET</code></td>
-<td><code>/api/users</code></td>
-<td>Listar usuários</td>
-<td><code>200</code></td>
-</tr>
-
-<tr>
-<td><code>GET</code></td>
-<td><code>/api/users/{id}</code></td>
-<td>Buscar por ID</td>
-<td><code>200</code></td>
-</tr>
-
-<tr>
-<td><code>PUT</code></td>
-<td><code>/api/users/{id}</code></td>
-<td>Atualizar usuário</td>
-<td><code>200</code></td>
-</tr>
-
-<tr>
-<td><code>DELETE</code></td>
-<td><code>/api/users/{id}</code></td>
-<td>Deletar usuário</td>
-<td><code>204</code></td>
-</tr>
-</table>
-
-### 📝 Exemplos de Requisições
-
-<details>
-<summary><b>POST /api/users</b> - Criar Usuário</summary>
-
-**Request:**
-```json
-POST /api/users
-Content-Type: application/json
-
-{
-  "name": "John Doe",
-  "email": "john.doe@example.com"
-}
-```
-
-**Response (201 Created):**
-```json
-{
-  "data": {
-    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-    "name": "John Doe",
-    "email": "john.doe@example.com"
-  },
-  "erros": []
-}
-```
-
-**Response (400 Bad Request):**
-```json
-{
-  "data": null,
-  "erros": [
-    {
-      "statusCode": 400,
-      "message": "E-mail já cadastrado.",
-      "key": "Email"
-    }
-  ]
-}
-```
-</details>
-
-<details>
-<summary><b>GET /api/users</b> - Listar Usuários</summary>
-
-**Response (200 OK):**
-```json
-{
-  "data": [
-    {
-      "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-      "name": "John Doe",
-      "email": "john.doe@example.com"
-    },
-    {
-      "id": "7c9e6679-7425-40de-944b-e07fc1f90ae7",
-      "name": "Jane Smith",
-      "email": "jane.smith@example.com"
-    }
-  ],
-  "erros": []
-}
-```
-</details>
-
-<details>
-<summary><b>GET /api/users/{id}</b> - Buscar Usuário</summary>
-
-**Response (200 OK):**
-```json
-{
-  "data": {
-    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-    "name": "John Doe",
-    "email": "john.doe@example.com"
-  },
-  "erros": []
-}
-```
-
-**Response (404 Not Found):**
-```json
-{
-  "data": null,
-  "erros": [
-    {
-      "statusCode": 404,
-      "message": "Usuário não encontrado.",
-      "key": "id"
-    }
-  ]
-}
-```
-</details>
-
-<details>
-<summary><b>PUT /api/users/{id}</b> - Atualizar Usuário</summary>
-
-**Request:**
-```json
-PUT /api/users/3fa85f64-5717-4562-b3fc-2c963f66afa6
-Content-Type: application/json
-
-{
-  "name": "John Doe Updated",
-  "email": "john.updated@example.com"
-}
-```
-
-**Response (200 OK):**
-```json
-{
-  "data": {
-    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-    "name": "John Doe Updated",
-    "email": "john.updated@example.com"
-  },
-  "erros": []
-}
-```
-</details>
-
-<details>
-<summary><b>DELETE /api/users/{id}</b> - Deletar Usuário</summary>
-
-**Response (204 No Content):**
-```
-(sem body)
-```
-
-**Response (404 Not Found):**
-```json
-{
-  "data": null,
-  "erros": [
-    {
-      "statusCode": 404,
-      "message": "Usuário não encontrado.",
-      "key": "id"
-    }
-  ]
-}
-```
-</details>
-
----
-
-## 🔧 Tecnologias
-
-<table>
-<tr>
-<td align="center" width="25%">
-<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/csharp/csharp-original.svg" width="50"/>
-<br/><b>C# 12.0</b>
-</td>
-<td align="center" width="25%">
-<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/dotnetcore/dotnetcore-original.svg" width="50"/>
-<br/><b>.NET 9</b>
-</td>
-<td align="center" width="25%">
-<img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/microsoftsqlserver/microsoftsqlserver-plain.svg" width="50"/>
-<br/><b>SQL Server</b>
-</td>
-<td align="center" width="25%">
-<img src="https://xunit.net/images/full-logo.svg" width="50"/>
-<br/><b>xUnit</b>
-</td>
-</tr>
-</table>
-
-### 📦 Principais Pacotes
-
-| Pacote | Versão | Propósito |
-|--------|--------|-----------|
-| **ASP.NET Core** | 9.0 | Web API Framework |
-| **Entity Framework Core** | 8.0 | ORM |
-| **FluentValidation** | 11.x | Validações |
-| **Swashbuckle** | 6.x | Swagger/OpenAPI |
-| **xUnit** | 2.9 | Testes Unitários |
-| **NSubstitute** | 5.1 | Mocking |
-| **FluentAssertions** | 6.12 | Assertions |
-| **AutoFixture** | 4.18 | Test Data Generation |
-
----
-
-## 📚 Documentação
-
-### 📖 Documentos Disponíveis
-
-- [📘 Arquitetura Detalhada](docs/architecture.md)
-- [🎨 Padrões de Projeto](docs/REFATORACAO_NOTIFICATION_PATTERN.md)
-- [🧪 Guia de Testes](docs/TESTES_UNITARIOS_IMPLEMENTADOS.md)
-- [🔄 Refatorações Aplicadas](docs/REFATORACAO_REMOCAO_RESULTMAPPER.md)
-- [🚀 Extension Methods](docs/MELHORIAS_EXTENSION_METHODS.md)
-- [📊 Cobertura de Testes](docs/RESUMO_EXECUTIVO_TESTES.md)
-
-### 🌐 Swagger/OpenAPI
-
-Acesse a documentação interativa da API:
-
-```
-https://localhost:5001/swagger
-```
-
-A documentação OpenAPI está disponível em:
-```
-docs/openapi.json
-```
-
-### 📊 Diagramas
-
-#### Diagrama de Entidades
-
-```
-┌──────────────────┐
-│      User        │
-├──────────────────┤
-│ Id: Guid         │
-│ Name: string     │
-│ Email: Email     │◄─── Value Object
-│ CreatedAt: Date  │
-└──────────────────┘
-```
-
-#### Fluxo de Requisição
-
-```
-HTTP Request
-    ↓
-┌─────────────────────────────────────┐
-│         Controller                  │
-│  - Recebe requisição               │
-│  - Valida DTO (DataAnnotations)   │
-└─────────────────────────────────────┘
-    ↓
-┌─────────────────────────────────────┐
-│         Service                     │
-│  - Lógica de negócio               │
-│  - Validação de domínio            │
-│  - Regras de negócio               │
-└─────────────────────────────────────┘
-    ↓
-┌─────────────────────────────────────┐
-│         Repository                  │
-│  - Persistência                     │
-│  - Queries                          │
-└─────────────────────────────────────┘
-    ↓
-┌─────────────────────────────────────┐
-│         Database                    │
-│  - SQL Server                       │
-└─────────────────────────────────────┘
-    ↓
-ApiResponse<T> { data, erros[] }
-    ↓
-HTTP Response (200/201/400/404)
-```
-
----
-
-## 🎯 Princípios Aplicados
-
-<table>
-<tr>
-<td width="50%">
-
-### 🏛️ SOLID
-
-- **S**ingle Responsibility
-- **O**pen/Closed
-- **L**iskov Substitution
-- **I**nterface Segregation
-- **D**ependency Inversion
-
-</td>
-<td width="50%">
-
-### 🧹 Clean Code
-
-- Nomes significativos
-- Funções pequenas
-- Código auto-explicativo
-- DRY (Don't Repeat Yourself)
-- KISS (Keep It Simple)
-
-</td>
-</tr>
-</table>
-
-### 🎨 Clean Architecture Benefits
-
-✅ **Testabilidade**: 95% de cobertura  
-✅ **Manutenibilidade**: Separação clara de responsabilidades  
-✅ **Independência**: Domain não depende de frameworks  
-✅ **Flexibilidade**: Fácil trocar infraestrutura  
-✅ **Escalabilidade**: Estrutura preparada para crescimento  
-
----
-
-## 🛠️ Desenvolvimento
-
-### 🔀 Git Workflow
+Rodar (foreground):
 
 ```bash
-# Criar branch para feature
-git checkout -b feature/nova-funcionalidade
-
-# Commits semânticos
-git commit -m "feat: adiciona validação de CPF"
-git commit -m "fix: corrige bug no endpoint de update"
-git commit -m "test: adiciona testes para UserService"
-
-# Push e PR
-git push origin feature/nova-funcionalidade
+docker run --rm -p 5000:5000 --name challenge-api-local edcamargo/challenge-api:local
 ```
 
-### 📝 Commit Messages
+Ou com docker-compose (simples):
 
-- `feat`: Nova funcionalidade
-- `fix`: Correção de bug
-- `docs`: Documentação
-- `test`: Testes
-- `refactor`: Refatoração
-- `style`: Formatação
-- `perf`: Performance
-- `chore`: Manutenção
+```bash
+docker-compose up --build
+```
 
----
+Logs:
 
-## 👥 Contribuindo
+```bash
+docker logs -f challenge-api-local
+```
 
-Contribuições são bem-vindas! Por favor:
+Health check rápido (curl):
 
-1. 🍴 Fork o projeto
-2. 🌿 Crie uma branch (`git checkout -b feature/AmazingFeature`)
-3. ✍️ Commit suas mudanças (`git commit -m 'feat: Add AmazingFeature'`)
-4. 📤 Push para a branch (`git push origin feature/AmazingFeature`)
-5. 🔃 Abra um Pull Request
+```bash
+curl -v http://localhost:5000/health || curl -v http://localhost:5000/
+```
 
-### ✅ Checklist do PR
-
-- [ ] Código segue o style guide
-- [ ] Testes foram adicionados/atualizados
-- [ ] Todos os testes passam
-- [ ] Documentação foi atualizada
-- [ ] Cobertura de testes mantida (≥90%)
+> Observação: a aplicação usa EF Core InMemory para execução e testes, ou seja, *não* requer banco externo por padrão.
 
 ---
 
-## 📄 License
+## Endpoints principais (exemplos)
 
-Este projeto está licenciado sob a MIT License - veja o arquivo [LICENSE](LICENSE) para detalhes.
+Base: `http://localhost:5000/api`
+
+### Users
+
+- POST /api/users — criar usuário
+
+Request (UserCreateDto):
+
+```json
+{
+  "name": "Edwin",
+  "email": "edwin@example.com"
+}
+```
+
+Success (201):
+
+```json
+{
+  "data": { "id": "<guid>", "name": "Edwin", "email": "edwin@example.com" },
+  "erros": []
+}
+```
+
+- GET /api/users — listar usuários (200)
+- GET /api/users/{id} — buscar por id (200 / 404)
+- PUT /api/users/{id} — atualizar (200 / 400 / 404)
+- DELETE /api/users/{id} — remover (204 / 404)
+
+### Tasks
+
+- POST /api/tasks — criar tarefa
+
+Request (TaskCreateDto):
+
+```json
+{
+  "title": "Comprar leite",
+  "description": "Ir ao supermercado",
+  "createdAt": "2025-11-10T12:00:00Z",
+  "dueDate": "2025-11-12T12:00:00Z",
+  "userId": "5a3df8c0-09bc-4f3b-9484-30a61b7f8445",
+  "isCompleted": false
+}
+```
+
+Success (201):
+
+```json
+{
+  "data": { "id": "<guid>", "title": "Comprar leite", "userId": "5a3df8c0-09bc-4f3b-9484-30a61b7f8445", "isCompleted": false },
+  "erros": []
+}
+```
+
+- GET /api/tasks — listar tarefas (200)
+- GET /api/tasks/{id} — obter por id (200 / 404)
+- GET /api/tasks/user/{userId} — tarefas de um usuário (200)
+- PUT /api/tasks/{id}/complete — atualizar status/editar (200)
+- DELETE /api/tasks/{id} — remover (204 / 404)
 
 ---
 
-## 🙏 Agradecimentos
+## Padronização de respostas (ApiResponse)
 
-- Clean Architecture - Robert C. Martin
-- Railway-Oriented Programming - Scott Wlaschin
-- Pattern Notification - Martin Fowler
+Todos os controllers retornam `ApiResponse<T>` com duas propriedades principais:
+
+- `data`: o payload quando sucesso
+- `erros`: array de `ApiError` contendo { statusCode, message, key }
+
+Exemplo de erro (400):
+
+```json
+{
+  "data": null,
+  "erros": [ { "statusCode": 400, "message": "O título da tarefa é obrigatório.", "key": "title" } ]
+}
+```
 
 ---
 
-<div align="center">
+## Testes e cobertura
 
-### 🌟 Se este projeto foi útil, considere dar uma estrela!
+Executar suíte de testes (local):
 
-**Desenvolvido com ❤️ e boas práticas**
+```bash
+dotnet test ./challenge.sln --collect:"XPlat Code Coverage"
+```
 
-[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com)
+Gerar relatório HTML (reportgenerator):
 
-</div>
+```bash
+dotnet tool install -g dotnet-reportgenerator-globaltool
+reportgenerator -reports:Challenge.Test/TestResults/*/coverage.cobertura.xml -targetdir:coverage-report -reporttypes:HtmlSummary;BadgeSummary
+```
 
+O artifact `coverage-report` também é gerado pelo CI. Você pode baixar o SVG do badge (`coverage-badge.svg`) no artifact e comitá-lo no repositório para mostrar no README.
+
+---
+
+## CI / Pipeline
+
+O workflow principal está em `.github/workflows/ci.yml` e executa:
+
+1. restore
+2. build
+3. test (coleta de cobertura)
+4. geração de relatório HTML e badge
+5. upload de artifacts (coverage-report, test-results)
+6. criação automática de PR com badge atualizado
+
+> Para integração com Codecov, adicione `CODECOV_TOKEN` nas Secrets do repositório.
+
+---
+
+## Contribuição
+
+1. Fork → branch `feature/...` ou `fix/...`
+2. Rode os testes localmente e garanta que tudo passe
+3. Abra PR com descrição clara e referências aos arquivos alterados
+
+---
+
+## Contatos e referências
+
+- Diagramas: `docs/architecture.puml`, `docs/entities.puml` (SVGs: `docs/*.svg`)
+- Test results & coverage: `Challenge.Test/TestResults/`
+
+---
+
+Se quiser, eu posso:
+- gerar e commitar `docs/entities.svg` (diagrama de entidades) para o repo;
+- criar docs OpenAPI (`openapi.json`) exportado via Swagger e subir como artifact no CI;
+- ajustar o README para exibir a badge de cobertura automaticamente (PR automático já configurado).
+
+---
+
+<!-- fim do README -->

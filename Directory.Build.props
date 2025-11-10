@@ -1,0 +1,9 @@
+<Project>
+  <PropertyGroup>
+    <!-- Treat all warnings as errors to prevent regressions -->
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <!-- Optional: control nullable warnings severity if needed -->
+    <WarningsAsErrors>$(WarningsAsErrors);CS8602;CS8603;CS8620</WarningsAsErrors>
+  </PropertyGroup>
+</Project>
+

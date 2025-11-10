@@ -27,7 +27,6 @@ namespace Domain.Entities
         public static User Create(string? name, string emailAddress)
         {
             var email = new Email(emailAddress);
-            // Domain validation could be added here if needed
             return new User(name, email);
         }
 

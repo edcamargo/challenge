@@ -23,7 +23,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Domain\Domain.csproj" />
-      <ProjectReference Include="..\InfraStructure.CrossCutting\InfraStructure.CrossCutting.csproj" />
       <ProjectReference Include="..\InfraStructure.Data\InfraStructure.Data.csproj" />
       <ProjectReference Include="..\InfraStructure.Ioc\InfraStructure.Ioc.csproj" />
     </ItemGroup>

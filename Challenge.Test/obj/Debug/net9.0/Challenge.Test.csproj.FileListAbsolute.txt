@@ -1,5 +1,12 @@
 /Users/local/source/challenge/Challenge.Test/bin/Debug/net9.0/.msCoverageSourceRootsMapping_Challenge.Test
 /Users/local/source/challenge/Challenge.Test/bin/Debug/net9.0/CoverletSourceRootsMapping_Challenge.Test
+/Users/local/source/challenge/Challenge.Test/obj/Debug/net9.0/Challenge.Test.csproj.AssemblyReference.cache
+/Users/local/source/challenge/Challenge.Test/obj/Debug/net9.0/MvcTestingAppManifest.json
+/Users/local/source/challenge/Challenge.Test/obj/Debug/net9.0/Challenge.Test.GeneratedMSBuildEditorConfig.editorconfig
+/Users/local/source/challenge/Challenge.Test/obj/Debug/net9.0/Challenge.Test.AssemblyInfoInputs.cache
+/Users/local/source/challenge/Challenge.Test/obj/Debug/net9.0/Challenge.Test.AssemblyInfo.cs
+/Users/local/source/challenge/Challenge.Test/obj/Debug/net9.0/Challenge.Test.csproj.CoreCompileInputs.cache
+/Users/local/source/challenge/Challenge.Test/obj/Debug/net9.0/Challenge.Test.sourcelink.json
 /Users/local/source/challenge/Challenge.Test/bin/Debug/net9.0/Presentation.Api.deps.json
 /Users/local/source/challenge/Challenge.Test/bin/Debug/net9.0/Presentation.Api.runtimeconfig.json
 /Users/local/source/challenge/Challenge.Test/bin/Debug/net9.0/appsettings.Development.json
@@ -432,13 +439,6 @@
 /Users/local/source/challenge/Challenge.Test/bin/Debug/net9.0/InfraStructure.CrossCutting.pdb
 /Users/local/source/challenge/Challenge.Test/bin/Debug/net9.0/InfraStructure.Data.pdb
 /Users/local/source/challenge/Challenge.Test/bin/Debug/net9.0/InfraStructure.Ioc.pdb
-/Users/local/source/challenge/Challenge.Test/obj/Debug/net9.0/Challenge.Test.csproj.AssemblyReference.cache
-/Users/local/source/challenge/Challenge.Test/obj/Debug/net9.0/MvcTestingAppManifest.json
-/Users/local/source/challenge/Challenge.Test/obj/Debug/net9.0/Challenge.Test.GeneratedMSBuildEditorConfig.editorconfig
-/Users/local/source/challenge/Challenge.Test/obj/Debug/net9.0/Challenge.Test.AssemblyInfoInputs.cache
-/Users/local/source/challenge/Challenge.Test/obj/Debug/net9.0/Challenge.Test.AssemblyInfo.cs
-/Users/local/source/challenge/Challenge.Test/obj/Debug/net9.0/Challenge.Test.csproj.CoreCompileInputs.cache
-/Users/local/source/challenge/Challenge.Test/obj/Debug/net9.0/Challenge.Test.sourcelink.json
 /Users/local/source/challenge/Challenge.Test/obj/Debug/net9.0/Challeng.554B8FCF.Up2Date
 /Users/local/source/challenge/Challenge.Test/obj/Debug/net9.0/Challenge.Test.dll
 /Users/local/source/challenge/Challenge.Test/obj/Debug/net9.0/refint/Challenge.Test.dll

@@ -52,9 +52,10 @@ namespace Challenge.Test.Integration.Presentation.Controllers
             var client = factory.CreateClient();
             var res = await client.GetAsync("/api/users");
             res.EnsureSuccessStatusCode();
-            var body = await res.Content.ReadAsStringAsync();
-            body.Should().Contain("TesteGetAll");
-            body.Should().Contain("getall@example.com");
+            var apiResponse = await res.Content.ReadFromJsonAsync<Application.Common.ApiResponse<IEnumerable<Application.Dtos.User.UserReponseDto>>>();
+            apiResponse.Should().NotBeNull();
+            apiResponse!.Data.Should().NotBeNull();
+            apiResponse.Data!.Any(u => u.Name == "TesteGetAll" && u.Email == "getall@example.com").Should().BeTrue();
         }
 
         [Fact]
@@ -78,9 +79,11 @@ namespace Challenge.Test.Integration.Presentation.Controllers
             var client = factory.CreateClient();
             var res = await client.GetAsync($"/api/users/{id}");
             res.EnsureSuccessStatusCode();
-            var body = await res.Content.ReadAsStringAsync();
-            body.Should().Contain("TesteById");
-            body.Should().Contain("byid@example.com");
+            var apiResponse = await res.Content.ReadFromJsonAsync<Application.Common.ApiResponse<Application.Dtos.User.UserReponseDto>>();
+            apiResponse.Should().NotBeNull();
+            apiResponse!.Data.Should().NotBeNull();
+            apiResponse.Data!.Name.Should().Be("TesteById");
+            apiResponse.Data.Email.Should().Be("byid@example.com");
         }
 
         [Fact]
@@ -93,9 +96,11 @@ namespace Challenge.Test.Integration.Presentation.Controllers
             var payload = new { name = "NovoUser", email = "novo@example.com" };
             var res = await client.PostAsJsonAsync("/api/users", payload);
             res.EnsureSuccessStatusCode();
-            var body = await res.Content.ReadAsStringAsync();
-            body.Should().Contain("NovoUser");
-            body.Should().Contain("novo@example.com");
+            var apiResponse = await res.Content.ReadFromJsonAsync<Application.Common.ApiResponse<Application.Dtos.User.UserReponseDto>>();
+            apiResponse.Should().NotBeNull();
+            apiResponse!.Data.Should().NotBeNull();
+            apiResponse.Data!.Name.Should().Be("NovoUser");
+            apiResponse.Data.Email.Should().Be("novo@example.com");
 
             // verify persisted
             using (var scope = factory.Services.CreateScope())
@@ -127,9 +132,11 @@ namespace Challenge.Test.Integration.Presentation.Controllers
             var updatePayload = new { name = "Depois", email = "depois@example.com" };
             var putRes = await client.PutAsJsonAsync($"/api/users/{id}", updatePayload);
             putRes.EnsureSuccessStatusCode();
-            var putBody = await putRes.Content.ReadAsStringAsync();
-            putBody.Should().Contain("Depois");
-            putBody.Should().Contain("depois@example.com");
+            var apiResponse = await putRes.Content.ReadFromJsonAsync<Application.Common.ApiResponse<Application.Dtos.User.UserReponseDto>>();
+            apiResponse.Should().NotBeNull();
+            apiResponse!.Data.Should().NotBeNull();
+            apiResponse.Data!.Name.Should().Be("Depois");
+            apiResponse.Data.Email.Should().Be("depois@example.com");
 
             // verify persisted
             using (var scope = factory.Services.CreateScope())

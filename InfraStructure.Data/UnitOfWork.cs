@@ -1,6 +1,5 @@
 using Domain.Intefaces;
 using InfraStructure.Data.Context;
-using System.Threading;
 
 namespace InfraStructure.Data;
 

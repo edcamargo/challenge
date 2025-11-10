@@ -1,6 +1,5 @@
 using Domain.Entities;
 using Domain.Inteface.Repositories;
-using System.Threading;
 
 namespace Domain.Intefaces.Repositories;
 

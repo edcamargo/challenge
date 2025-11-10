@@ -1,9 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using InfraStructure.Data.Context;
-using InfraStructure.Data.Repositories;
-using Microsoft.OpenApi.Models;
 using Presentation.Api.Extensions;
-using Swashbuckle.AspNetCore.Annotations;
 
 var builder = WebApplication.CreateBuilder(args);
 

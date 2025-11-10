@@ -6,7 +6,7 @@ public class Email
 
     public Email(string endereco) => Endereco = endereco;
 
-    public static bool IsValid(string email)
+    public static bool IsValid(string? email)
     {
         if (string.IsNullOrWhiteSpace(email))
             return false;

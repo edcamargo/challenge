@@ -1,7 +1,6 @@
 using Application.Common;
 using FluentAssertions;
 using FluentValidation.Results;
-using Xunit;
 
 namespace Challenge.Test.Unit.Domain.Common;
 

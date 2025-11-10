@@ -19,5 +19,6 @@
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=ef3e4fdf_002D07b2_002D4fbb_002D8a09_002D42e51c32c356/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="UsersControllerTests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;TestAncestor&gt;
     &lt;TestId&gt;xUnit::541BEBFC-F5C0-4E57-9708-F4BF13C6E5AC::net9.0::Challenge.Test.Integration.Presentation.Controllers.UsersControllerTests&lt;/TestId&gt;
+    &lt;TestId&gt;xUnit::541BEBFC-F5C0-4E57-9708-F4BF13C6E5AC::net9.0::Tests.Domain.ValueObjects.EmailTests&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="360" viewBox="0 0 900 360">
+  <style>
+    .box { fill: #ffffff; stroke: #2b6cb0; stroke-width: 2px; rx: 6px; }
+    .title { font: bold 16px sans-serif; fill: #2b6cb0; }
+    .attr { font: 13px sans-serif; fill: #333333; }
+    .note { font: 12px sans-serif; fill: #555555; }
+    .arrow { stroke: #2b6cb0; stroke-width: 2px; marker-end: url(#arrowhead); }
+  </style>
+
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2b6cb0" />
+    </marker>
+  </defs>
+
+  <!-- User box -->
+  <g transform="translate(80,40)">
+    <rect class="box" width="300" height="150" />
+    <text class="title" x="18" y="30">User</text>
+    <text class="attr" x="18" y="58">Id : Guid</text>
+    <text class="attr" x="18" y="78">Name : string</text>
+    <text class="attr" x="18" y="98">Email : Email (ValueObject)</text>
+    <text class="attr" x="18" y="118">CreatedAt : DateTime</text>
+  </g>
+
+  <!-- Tasks box -->
+  <g transform="translate(520,40)">
+    <rect class="box" width="320" height="190" />
+    <text class="title" x="18" y="30">Tasks</text>
+    <text class="attr" x="18" y="58">Id : Guid</text>
+    <text class="attr" x="18" y="78">Title : string</text>
+    <text class="attr" x="18" y="98">Description : string?</text>
+    <text class="attr" x="18" y="118">CreatedAt : DateTime</text>
+    <text class="attr" x="18" y="138">DueDate : DateTime?</text>
+    <text class="attr" x="18" y="158">UserId : Guid</text>
+    <text class="attr" x="18" y="178">IsCompleted : bool</text>
+  </g>
+
+  <!-- Relationship arrow and label -->
+  <g>
+    <line class="arrow" x1="380" y1="115" x2="520" y2="115" />
+    <text class="note" x="410" y="100">1</text>
+    <text class="note" x="510" y="100">*</text>
+    <text class="note" x="405" y="135">User "1" ---- "*" Tasks</text>
+  </g>
+
+  <!-- Notes -->
+  <g transform="translate(80,220)">
+    <rect x="0" y="0" width="760" height="110" rx="6" fill="#f7fafc" stroke="#e2e8f0" />
+    <text class="note" x="12" y="22">ValueObject: Email (Endereco : string, EhValido())</text>
+    <text class="note" x="12" y="44">Tasks validation summary: Title required (2..200), Description max 1000, DueDate must be future if present, UserId required.</text>
+    <text class="note" x="12" y="66">Domain methods: Tasks.MarkCompleted(), Tasks.MarkPending()</text>
+  </g>
+
+</svg>
+

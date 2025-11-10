@@ -1,13 +1,11 @@
 using Application.Dtos.User;
 using Application.Services;
-using Application.Common;
 using Domain.Entities;
 using Domain.Intefaces;
 using Domain.Intefaces.Repositories;
 using Domain.ValueObjects;
 using FluentAssertions;
 using NSubstitute;
-using Xunit;
 
 namespace Challenge.Test.Unit.Application.Services;
 

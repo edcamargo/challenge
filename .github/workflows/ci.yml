@@ -1,0 +1,89 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build-test-coverage:
+    name: Build, Test and Coverage
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: nuget-${{ runner.os }}-$(echo "$(git rev-parse --show-toplevel)" | sha1sum | cut -d' ' -f1)
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --no-restore --configuration Release
+
+      - name: Test with coverage
+        run: |
+          dotnet test --no-build --configuration Release --collect:"XPlat Code Coverage" --results-directory ./TestResults
+
+      - name: Install reportgenerator tool
+        run: dotnet tool install -g dotnet-reportgenerator-globaltool --version 5.1.23
+
+      - name: Generate HTML coverage report
+        run: |
+          reportgenerator -reports:./TestResults/**/coverage.cobertura.xml -targetdir:coverage-report -reporttypes:HtmlSummary;BadgeSummary
+
+      - name: Upload coverage report artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage-report
+
+      - name: Copy generated badge to repo root (if present)
+        run: |
+          set -e
+          svg=$(find coverage-report -type f -name '*.svg' | head -n 1 || true)
+          if [ -z "$svg" ]; then
+            echo "No badge SVG generated. Skipping badge copy.";
+            exit 0
+          fi
+          echo "Found badge: $svg"
+          cp "$svg" coverage-badge.svg
+          git status --porcelain || true
+
+      - name: Create PR with updated coverage badge
+        uses: peter-evans/create-pull-request@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore(ci): update coverage badge"
+          branch: "ci/coverage-badge-${{ github.run_id }}"
+          title: "chore: update coverage badge"
+          body: |
+            This PR was created automatically by the CI workflow to update the coverage badge.
+            Run: ${{ github.run_id }}
+          base: main
+          labels: coverage
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          files: ./TestResults/**/coverage.cobertura.xml
+          fail_ci_if_error: true
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: TestResults
+

@@ -4,7 +4,6 @@ using Domain.ValueObjects;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Api.Extensions;
-using Xunit;
 
 namespace Challenge.Test.Unit.Presentation.Extensions;
 
@@ -379,5 +378,124 @@ public class ApiResponseExtensionsTests
     }
 
     #endregion
-}
 
+    #region Additional ToActionResult/ToCreatedAtActionResult Tests
+
+    [Fact]
+    public void ToActionResult_WithMapperAndNullData_Returns500()
+    {
+        // Arrange
+        var response = new ApiResponse<User> { Data = null, Erros = new List<ApiError>() };
+
+        // Act
+        var result = response.ToActionResult<User, object>(u => new { u.Name });
+
+        // Assert
+        result.Should().BeOfType<ObjectResult>();
+        var obj = result as ObjectResult;
+        obj!.StatusCode.Should().Be(500);
+        var body = obj.Value as ApiResponse<object>;
+        body!.Erros.First().Message.Should().Contain("nulos");
+    }
+
+    [Fact]
+    public void ToActionResult_CollectionMapper_WithEmptyCollection_ReturnsOkWithEmpty()
+    {
+        // Arrange
+        var response = ApiResponse<IEnumerable<User>>.Success(new List<User>());
+
+        // Act
+        var result = response.ToActionResult<User, object>(u => new { u.Name });
+
+        // Assert
+        result.Should().BeOfType<OkObjectResult>();
+        var ok = result as OkObjectResult;
+        var body = ok!.Value as ApiResponse<IEnumerable<object>>;
+        body!.Data.Should().NotBeNull();
+        body.Data.Should().BeEmpty();
+    }
+
+    [Fact]
+    public void ToCreatedAtActionResult_WithMapperAndRouteFactory_ReturnsCreated()
+    {
+        // Arrange
+        var user = new User("Created", new Email("c@example.com"));
+        var response = ApiResponse<User>.Success(user);
+
+        // Act
+        var result = response.ToCreatedAtActionResult<User, object>("Get", u => new { u.Name }, o => new { id = ((dynamic)o).Name });
+
+        // Assert
+        result.Should().BeOfType<CreatedAtActionResult>();
+        var created = result as CreatedAtActionResult;
+        created!.ActionName.Should().Be("Get");
+    }
+
+    [Fact]
+    public void ToCreatedAtActionResult_WithMapperAndNullData_Returns500()
+    {
+        // Arrange
+        var response = new ApiResponse<User>() { Data = null, Erros = new List<ApiError>() };
+
+        // Act
+        var result = response.ToCreatedAtActionResult<User, object>("Get", u => new { u.Name });
+
+        // Assert
+        result.Should().BeOfType<ObjectResult>();
+        var obj = result as ObjectResult;
+        obj!.StatusCode.Should().Be(500);
+    }
+
+    [Fact]
+    public void ToActionResult_CollectionMapper_WithOneItem_ReturnsOkAndMappedItem()
+    {
+        // Arrange
+        var users = new List<User> { new User("Solo", new Email("solo@example.com")) };
+        var response = ApiResponse<IEnumerable<User>>.Success(users);
+
+        // Act
+        var result = response.ToActionResult<User, object>(u => new { u.Name, Email = u.Email.Endereco });
+
+        // Assert
+        result.Should().BeOfType<OkObjectResult>();
+        var ok = result as OkObjectResult;
+        var body = ok!.Value as ApiResponse<IEnumerable<object>>;
+        body!.Data.Should().NotBeNull();
+        body.Data.Should().HaveCount(1);
+        body.Data!.First().Should().NotBeNull();
+    }
+
+    [Fact]
+    public void ToActionResult_CollectionMapper_WithNullData_Returns500()
+    {
+        // Arrange
+        var response = new ApiResponse<IEnumerable<User>> { Data = null, Erros = new List<ApiError>() };
+
+        // Act
+        var result = response.ToActionResult<User, object>(u => new { u.Name });
+
+        // Assert
+        result.Should().BeOfType<ObjectResult>();
+        var obj = result as ObjectResult;
+        obj!.StatusCode.Should().Be(500);
+        var body = obj.Value as ApiResponse<IEnumerable<object>>;
+        body!.Erros.First().Message.Should().Contain("nulos");
+    }
+
+    [Fact]
+    public void ToActionResult_CollectionMapper_WithError_ReturnsErrorStatus()
+    {
+        // Arrange
+        var response = ApiResponse<IEnumerable<User>>.Failure(new ApiError(418, "I'm a teapot"));
+
+        // Act
+        var result = response.ToActionResult<User, object>(u => new { u.Name });
+
+        // Assert
+        result.Should().BeOfType<ObjectResult>();
+        var obj = result as ObjectResult;
+        obj!.StatusCode.Should().Be(418);
+    }
+
+    #endregion
+}
