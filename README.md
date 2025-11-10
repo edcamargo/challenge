@@ -1,32 +1,28 @@
-# Challenge — Gerenciamento de Tarefas
+# Challenge — Gerenciamento de Tarefas  
+<p align="left">  
+  <img alt="dotnet" src="https://img.shields.io/badge/.NET-9.0-512BD4?logo=dotnet&logoColor=white" />
+  <img alt="xUnit" src="https://img.shields.io/badge/Tests-xUnit-FF4081?logo=xunit&logoColor=white" />
+  <img alt="coverage" src="https://img.shields.io/badge/Coverage-90.9%25-brightgreen" />
+</p>
 
-[![CI](https://github.com/edcamargo/challenge/actions/workflows/ci.yml/badge.svg)](https://github.com/edcamargo/challenge/actions/workflows/ci.yml) [![Coverage](https://raw.githubusercontent.com/edcamargo/challenge/main/coverage-badge.svg)](coverage-report/index.html)
-
-> Nota: o coverage badge (`coverage-badge.svg`) será gerado automaticamente pelo workflow de CI e um Pull Request será criado (branch `ci/coverage-badge-<run_id>`) contendo o SVG atualizado. Revise e mescle o PR para publicar o novo badge no README. Se preferir, baixe o artifact `coverage-report` do run (Actions → Artifacts), extraia o SVG e comite manualmente no repositório.
-
-Uma API em .NET 9 para gerenciamento de tarefas (Users + Tasks) construída com princípios de Clean Architecture: Domain, Application, Infrastructure e Presentation. Projetada para ser simples, testável e de fácil manutenção.
+Uma API em .NET 9 para gerenciamento de tarefas (Users + Tasks) construída com princípios de Clean Architecture: Domain, Application, Infrastructure e Presentation.
 
 - Linguagem: C# (.NET 9)
 - Testes: xUnit + FluentAssertions + NSubstitute
 - Persistência nos testes: EF Core InMemory
-- CI: GitHub Actions (build/test/coverage)
 
 ---
 
 ## Sumário
 
 - [Visão geral](#visão-geral)
-- [Status / Badges](#status--badges)
 - [Arquitetura & Diagramas](#arquitetura--diagramas)
-- [Como rodar (rápido)](#como-rodar-rápido)
+- [Como rodar](#como-rodar)
   - [Rodar local (.NET)](#rodar-local-net)
   - [Rodar com Docker](#rodar-com-docker)
 - [Endpoints principais (exemplos)](#endpoints-principais-exemplos)
-  - [Users](#users)
-  - [Tasks](#tasks)
 - [Padronização de respostas (ApiResponse)](#padronização-de-respostas-apiresponse)
 - [Testes e cobertura](#testes-e-cobertura)
-- [CI / Pipeline](#ci--pipeline)
 - [Contribuição](#contribuição)
 
 ---
@@ -35,15 +31,15 @@ Uma API em .NET 9 para gerenciamento de tarefas (Users + Tasks) construída com 
 
 A aplicação é organizada por camadas:
 
-- Domain: Entidades, ValueObjects, validações e regras de negócio.
+- Domain: Entidades, ValueObjects e validações de domínio.
 - Application: DTOs, Services (casos de uso), interfaces e mapeamentos.
 - InfraStructure: Implementações de repositórios, DataContext (EF Core) e IoC.
-- Presentation: API (controllers), middlewares, mapeamentos de resposta.
+- Presentation: API (controllers), middlewares e documentação (Swagger).
 
 Principais decisões:
 - Notification pattern (ApiResponse/ApiError) para retornar validações/erros sem lançar exceções.
-- Repositório genérico + UnitOfWork para controlar persistência.
-- Testes automatizados (unit + integration) com cobertura elevada.
+- Repositório + UnitOfWork para controle de persistência.
+- Testes automatizados (unit + integration) com provider InMemory para fácil execução.
 
 ---
 
@@ -52,17 +48,23 @@ Principais decisões:
 - Diagrama da arquitetura: `docs/architecture.puml` / `docs/architecture.svg`
 - Diagrama das entidades: `docs/entities.puml` / `docs/entities.svg`
 
-(Se os SVGs não estiverem no repositório, gere com PlantUML ou use a extensão do seu editor.)
+Abaixo o diagrama simplificado da arquitetura da aplicação:
 
-Exemplo rápido (Entities):
+![Architecture diagram](docs/architecture.svg)
 
-![Entities diagram](docs/entities.svg)
+Breve explicação das camadas:
+
+- Presentation.Api — controllers, endpoints e integração com Swagger/UI.
+- Application — serviços que implementam as regras de negócio e tratam validações.
+- Domain — entidades, value-objects e validações de domínio.
+- InfraStructure.Data — DataContext, repositórios e UnitOfWork.
+- InfraStructure.Ioc — composition root e registro de dependências.
 
 ---
 
-## Como rodar — rápido
+## Como rodar
 
-Requisitos: .NET 9 SDK e (opcional) Docker.
+Requisitos: .NET 9 SDK (para execução local) e Docker (opcional).
 
 ### Rodar local (.NET)
 
@@ -75,41 +77,39 @@ dotnet build -c Debug
 cd Presentation.Api
 dotnet run --urls "http://localhost:5000"
 ```
-Abra `http://localhost:5000/swagger/index.html` para explorar a API (development).
+
+Abra `http://localhost:5000/swagger/index.html` para explorar a API em modo de desenvolvimento.
 
 ### Rodar com Docker
 
-Build da imagem (a partir da raiz do repo):
+Os comandos abaixo foram fornecidos para criar e executar uma imagem Docker localmente.
+
+1) Build da imagem Docker (a partir da raiz do repositório):
 
 ```bash
-docker build -f Presentation.Api/Dockerfile -t edcamargo/challenge-api:local .
+docker build -t challenge:latest .
 ```
 
-Rodar (foreground):
+2) Executar a imagem em segundo plano e mapear a porta 8080:
 
 ```bash
-docker run --rm -p 5000:5000 --name challenge-api-local edcamargo/challenge-api:local
+docker run -d -p 8080:8080 --name challenge challenge:latest
 ```
 
-Ou com docker-compose (simples):
+Dicas úteis:
 
 ```bash
-docker-compose up --build
+# ver logs do container
+docker logs -f challenge
+
+# parar e remover
+docker stop challenge && docker rm challenge
+
+# abrir um shell dentro do container
+docker exec -it challenge /bin/bash
 ```
 
-Logs:
-
-```bash
-docker logs -f challenge-api-local
-```
-
-Health check rápido (curl):
-
-```bash
-curl -v http://localhost:5000/health || curl -v http://localhost:5000/
-```
-
-> Observação: a aplicação usa EF Core InMemory para execução e testes, ou seja, *não* requer banco externo por padrão.
+> Observação: a aplicação por padrão usa o provider InMemory nos testes e para execução local; ajuste variáveis de ambiente se quiser conectar a um banco externo.
 
 ---
 
@@ -120,35 +120,21 @@ Base: `http://localhost:5000/api`
 ### Users
 
 - POST /api/users — criar usuário
-
-Request (UserCreateDto):
-
-```json
-{
-  "name": "Edwin",
-  "email": "edwin@example.com"
-}
-```
-
-Success (201):
-
-```json
-{
-  "data": { "id": "<guid>", "name": "Edwin", "email": "edwin@example.com" },
-  "erros": []
-}
-```
-
-- GET /api/users — listar usuários (200)
-- GET /api/users/{id} — buscar por id (200 / 404)
-- PUT /api/users/{id} — atualizar (200 / 400 / 404)
-- DELETE /api/users/{id} — remover (204 / 404)
+- GET /api/users — listar usuários
+- GET /api/users/{id} — buscar por id
+- PUT /api/users/{id} — atualizar
+- DELETE /api/users/{id} — remover
 
 ### Tasks
 
 - POST /api/tasks — criar tarefa
+- GET /api/tasks — listar tarefas
+- GET /api/tasks/{id} — obter por id
+- GET /api/tasks/user/{userId} — tarefas de um usuário
+- PUT /api/tasks/{id}/complete — atualizar (rota atual)
+- DELETE /api/tasks/{id} — remover
 
-Request (TaskCreateDto):
+Exemplo com `TaskCreateDto` (JSON):
 
 ```json
 {
@@ -156,25 +142,10 @@ Request (TaskCreateDto):
   "description": "Ir ao supermercado",
   "createdAt": "2025-11-10T12:00:00Z",
   "dueDate": "2025-11-12T12:00:00Z",
-  "userId": "5a3df8c0-09bc-4f3b-9484-30a61b7f8445",
+  "userId": "<guid>",
   "isCompleted": false
 }
 ```
-
-Success (201):
-
-```json
-{
-  "data": { "id": "<guid>", "title": "Comprar leite", "userId": "5a3df8c0-09bc-4f3b-9484-30a61b7f8445", "isCompleted": false },
-  "erros": []
-}
-```
-
-- GET /api/tasks — listar tarefas (200)
-- GET /api/tasks/{id} — obter por id (200 / 404)
-- GET /api/tasks/user/{userId} — tarefas de um usuário (200)
-- PUT /api/tasks/{id}/complete — atualizar status/editar (200)
-- DELETE /api/tasks/{id} — remover (204 / 404)
 
 ---
 
@@ -194,6 +165,18 @@ Exemplo de erro (400):
 }
 ```
 
+### ✅ Padrão envelopado — vantagens
+
+Adotamos respostas envelopadas (`ApiResponse<T>`) nos endpoints; abaixo as vantagens principais:
+
+- 🔄 Consistência: sempre o mesmo envelope (`data` + `erros`) facilita parsing e uso por clientes.
+- 🧩 Centralização de erros: validações e mensagens ficam padronizadas, reduzindo lógica repetida em controllers.
+- 📦 Robustez na evolução da API: permite adicionar campos (meta, paging, links) sem quebrar clientes existentes.
+- 🧪 Testabilidade: facilita asserts nos testes (verificar `data` ou `erros`) e simular cenários de erro/sucesso.
+- 🚦 Mapeamento HTTP claro: o envelope contém informação de status/erro que pode ser usada para mapear códigos HTTP coerentes.
+- 🌍 Localização e contexto: erros podem incluir `key` e mensagens prontas para tradução/consumo pelo cliente.
+- 📈 Observabilidade: facilita registro/telemetria de erros e métricas de negócio ao centralizar mensagens.
+
 ---
 
 ## Testes e cobertura
@@ -204,63 +187,24 @@ Executar suíte de testes (local):
 dotnet test ./challenge.sln --collect:"XPlat Code Coverage"
 ```
 
-Gerar relatório HTML (reportgenerator):
+Gerar relatório HTML (local) com `reportgenerator` (instale a ferramenta globalmente se necessário):
 
 ```bash
 dotnet tool install -g dotnet-reportgenerator-globaltool
-reportgenerator -reports:Challenge.Test/TestResults/*/coverage.cobertura.xml -targetdir:coverage-report -reporttypes:HtmlSummary;BadgeSummary
+reportgenerator -reports:Challenge.Test/TestResults/*/coverage.cobertura.xml -targetdir:coverage-report -reporttypes "HtmlSummary;BadgeSummary"
+open coverage-report/summary.html
 ```
 
-O artifact `coverage-report` também é gerado pelo CI. Você pode baixar o SVG do badge (`coverage-badge.svg`) no artifact e comitá-lo no repositório para mostrar no README.
+O arquivo de cobertura XML gerado pelos testes está em `Challenge.Test/TestResults/*/coverage.cobertura.xml`.
 
 ---
 
-## Métricas de cobertura (atual)
+## Métricas de cobertura (última execução)
 
-As métricas abaixo foram extraídas do último relatório gerado em `Challenge.Test/TestResults/*/coverage.cobertura.xml`.
+- 📊 Coverage (linhas): **90.94%** — 633/696
+- 🔀 Coverage (branches): **72.54%** — 74/102
 
-- Coverage (linhas): 89.95% (lines-covered: 654 / lines-valid: 727)
-- Coverage (branches): 59.16% (branches-covered: 71 / branches-valid: 120)
-
-Nota: os valores podem variar conforme você executar a suíte de testes localmente ou quando o CI rodar. Para recomputar as métricas localmente a partir do arquivo `coverage.cobertura.xml` use uma destas opções:
-
-- Usando `xmlstarlet` (recomendado se instalado):
-
-```bash
-xmlstarlet sel -t -v "/coverage/@line-rate" Challenge.Test/TestResults/*/coverage.cobertura.xml
-xmlstarlet sel -t -v "/coverage/@branch-rate" Challenge.Test/TestResults/*/coverage.cobertura.xml
-```
-
-- Usando `xmllint` (se disponível):
-
-```bash
-xmllint --xpath 'string(/coverage/@line-rate)' Challenge.Test/TestResults/*/coverage.cobertura.xml
-xmllint --xpath 'string(/coverage/@branch-rate)' Challenge.Test/TestResults/*/coverage.cobertura.xml
-```
-
-- Usando `grep`/`sed` (alternativa simples):
-
-```bash
-grep -o "line-rate=\"[^"]*\"" Challenge.Test/TestResults/*/coverage.cobertura.xml | head -n1 | sed 's/line-rate="//;s/"//'
-grep -o "branch-rate=\"[^"]*\"" Challenge.Test/TestResults/*/coverage.cobertura.xml | head -n1 | sed 's/branch-rate="//;s/"//'
-```
-
-Interprete o resultado `line-rate` (valor entre 0 e 1) multiplicando por 100 para obter a porcentagem.
-
----
-
-## CI / Pipeline
-
-O workflow principal está em `.github/workflows/ci.yml` e executa:
-
-1. restore
-2. build
-3. test (coleta de cobertura)
-4. geração de relatório HTML e badge
-5. upload de artifacts (coverage-report, test-results)
-6. criação automática de PR com badge atualizado
-
-> Para integração com Codecov, adicione `CODECOV_TOKEN` nas Secrets do repositório.
+_Dica:_ rode `reportgenerator` para gerar o badge SVG que pode ser colocado no topo do README.
 
 ---
 
@@ -269,20 +213,6 @@ O workflow principal está em `.github/workflows/ci.yml` e executa:
 1. Fork → branch `feature/...` ou `fix/...`
 2. Rode os testes localmente e garanta que tudo passe
 3. Abra PR com descrição clara e referências aos arquivos alterados
-
----
-
-## Contatos e referências
-
-- Diagramas: `docs/architecture.puml`, `docs/entities.puml` (SVGs: `docs/*.svg`)
-- Test results & coverage: `Challenge.Test/TestResults/`
-
----
-
-Se quiser, eu posso:
-- gerar e commitar `docs/entities.svg` (diagrama de entidades) para o repo;
-- criar docs OpenAPI (`openapi.json`) exportado via Swagger e subir como artifact no CI;
-- ajustar o README para exibir a badge de cobertura automaticamente (PR automático já configurado).
 
 ---
 

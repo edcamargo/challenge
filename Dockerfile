@@ -13,7 +13,6 @@ COPY ./Application/Application.csproj ./Application/
 COPY ./Domain/Domain.csproj ./Domain/
 COPY ./InfraStructure.Data/InfraStructure.Data.csproj ./InfraStructure.Data/
 COPY ./InfraStructure.Ioc/InfraStructure.Ioc.csproj ./InfraStructure.Ioc/
-COPY ./InfraStructure.CrossCutting/InfraStructure.CrossCutting.csproj ./InfraStructure.CrossCutting/
 
 RUN dotnet restore "Presentation.Api/Presentation.Api.csproj"
 COPY . .
@@ -26,6 +25,6 @@ RUN dotnet publish "Presentation.Api.csproj" -c $BUILD_CONFIGURATION -o /app/pub
 
 FROM base AS final
 WORKDIR /src
-COPY --from=publish /src/publish .
+COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "Presentation.Api.dll"]
 

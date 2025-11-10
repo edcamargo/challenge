@@ -6,8 +6,7 @@ public record TaskCreateDto
     string? Description, 
     DateTime CreatedAt,
     DateTime? DueDate,
-    Guid UserId,
-    bool IsCompleted)
+    Guid UserId)
 {
     public Domain.Entities.Tasks ToEntity()
         => new Domain.Entities.Tasks(Title, Description, DueDate, UserId);
@@ -20,8 +19,7 @@ public record TaskUpdateDto
     string? Description,
     DateTime CreatedAt,
     DateTime? DueDate,
-    Guid UserId,
-    bool IsCompleted)
+    Guid UserId)
 {
     public Domain.Entities.Tasks ToEntity()
     {
@@ -29,10 +27,7 @@ public record TaskUpdateDto
         {
             Id = Id
         };
-        if (IsCompleted)
-            task.MarkCompleted();
-        else
-            task.MarkPending();
+        
         return task;
     }
 }

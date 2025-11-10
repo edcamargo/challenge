@@ -7,7 +7,7 @@ namespace Application.Services.Interfaces;
 public interface ITaskService
 {
     Task<ApiResponse<Tasks>> Add(TaskCreateDto dto);
-    Task<ApiResponse<Tasks>> Update(Guid id, TaskUpdateDto dto);
+    Task<ApiResponse<Tasks>> Update(Guid id, Guid taskId);
     Task<ApiResponse<bool>> Delete(Guid id);
     Task<ApiResponse<IEnumerable<Tasks>>> GetAll(int pageNumber, int pageSize);
     Task<ApiResponse<Tasks>> GetById(Guid id);

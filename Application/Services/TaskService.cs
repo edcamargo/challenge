@@ -35,27 +35,30 @@ public class TaskService : ITaskService
         var user = await _userRepository.GetByIdAsync(tasks.UserId);
         if (user is null)
             return ApiResponse<Tasks>.Error(400, "Usuário associado não encontrado.", "UserId");
-        
+
+        tasks.IsCompleted.Equals(true);
         var addedTask = await _taskRepository.AddAsync(tasks);
         await _unitOfWork.SaveChangesAsync();
 
         return ApiResponse<Tasks>.Success(addedTask);
     }
     
-    public async Task<ApiResponse<Tasks>> Update(Guid id, TaskUpdateDto dto)
+    public async Task<ApiResponse<Tasks>> Update(Guid id, Guid taskId)
     {
         var existingTask = await _taskRepository.GetByIdAsync(id);
         if (existingTask is null)
             return ApiResponse<Tasks>.NotFound("Tarefa não encontrada.");
 
-        var entity = dto.ToEntity();
-        entity.Id = id; // Garante que o Id seja o correto
-        
+        var entity = await _taskRepository.GetByIdAsync(taskId);
+        if (entity is null)
+            return ApiResponse<Tasks>.NotFound("Task não foi encontrada.");
+
         // Validação da entidade
         var validation = entity.EhValido();
         if (!validation.IsValid)
             return ApiResponse<Tasks>.ValidationFailure(validation);
-
+    
+        entity.MarkCompleted();
         var updatedTask = await _taskRepository.UpdateAsync(entity);
         await _unitOfWork.SaveChangesAsync();
 
