@@ -1,0 +1,74 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Challenge - Gerenciamento de Tarefas API",
+    "version": "1.0.0",
+    "description": "API para gerenciar usuários e tarefas (exemplo)."
+  },
+  "servers": [{ "url": "http://localhost:5000" }],
+  "paths": {
+    "/api/users": {
+      "post": {
+        "summary": "Criar usuário",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UserCreateDto" },
+              "examples": { "default": { "value": { "name": "Fulano", "email": "fulano@example.com" } } }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Created", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ResponseEnvelopeUser" } } } },
+          "400": { "description": "Bad Request", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorEnvelope" } } } }
+        }
+      },
+      "get": {
+        "summary": "Listar usuários",
+        "responses": { "200": { "description": "OK", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ResponseEnvelopeUserList" } } } } }
+      }
+    },
+    "/api/users/{id}": {
+      "get": {
+        "summary": "Obter usuário por id",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }],
+        "responses": { "200": { "description": "OK", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ResponseEnvelopeUser" } } } }, "404": { "description": "Not Found" } }
+      }
+    },
+    "/api/tasks": {
+      "post": {
+        "summary": "Criar tarefa",
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/TaskCreateDto" }, "examples": { "default": { "value": { "title": "Testar API", "description": "Criar testes", "dueDate": "2025-12-20T00:00:00Z", "userId": "00000000-0000-0000-0000-000000000000" } } } } } },
+        "responses": { "201": { "description": "Created", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ResponseEnvelopeTask" } } } }, "400": { "description": "Bad Request" } }
+      }
+    },
+    "/api/tasks/{id}": {
+      "get": { "summary": "Obter tarefa por id", "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }], "responses": { "200": { "description": "OK" }, "404": { "description": "Not Found" } } }
+    },
+    "/api/tasks/by-user/{userId}": {
+      "get": { "summary": "Listar tarefas por usuário", "parameters": [{ "name": "userId", "in": "path", "required": true, "schema": { "type": "string", "format": "uuid" } }], "responses": { "200": { "description": "OK" } } }
+    }
+  },
+  "components": {
+    "schemas": {
+      "UserCreateDto": {
+        "type": "object",
+        "required": ["name","email"],
+        "properties": { "name": { "type": "string" }, "email": { "type": "string", "format": "email" } }
+      },
+      "UserDto": {
+        "type": "object",
+        "properties": { "id": { "type": "string", "format": "uuid" }, "name": { "type": "string" }, "email": { "type": "string" }, "createdAt": { "type": "string", "format": "date-time" } }
+      },
+      "TaskCreateDto": { "type": "object", "required": ["title","userId"], "properties": { "title": { "type": "string" }, "description": { "type": "string" }, "dueDate": { "type": "string", "format": "date-time" }, "userId": { "type": "string", "format": "uuid" } } },
+      "TaskDto": { "type": "object", "properties": { "id": { "type": "string", "format": "uuid" }, "title": { "type": "string" }, "description": { "type": "string" }, "createdAt": { "type": "string", "format": "date-time" }, "dueDate": { "type": "string", "format": "date-time" }, "userId": { "type": "string", "format": "uuid" }, "isCompleted": { "type": "boolean" } } },
+      "NotificationDto": { "type": "object", "properties": { "key": { "type": "string" }, "message": { "type": "string" } } },
+      "ErrorEnvelope": { "type": "object", "properties": { "success": { "type": "boolean" }, "errors": { "type": "array", "items": { "$ref": "#/components/schemas/NotificationDto" } } } },
+      "ResponseEnvelopeUser": { "type": "object", "properties": { "success": { "type": "boolean" }, "data": { "$ref": "#/components/schemas/UserDto" }, "notifications": { "type": "array", "items": { "$ref": "#/components/schemas/NotificationDto" } } } },
+      "ResponseEnvelopeUserList": { "type": "object", "properties": { "success": { "type": "boolean" }, "data": { "type": "array", "items": { "$ref": "#/components/schemas/UserDto" } }, "notifications": { "type": "array", "items": { "$ref": "#/components/schemas/NotificationDto" } } } },
+      "ResponseEnvelopeTask": { "type": "object", "properties": { "success": { "type": "boolean" }, "data": { "$ref": "#/components/schemas/TaskDto" }, "notifications": { "type": "array", "items": { "$ref": "#/components/schemas/NotificationDto" } } } }
+    }
+  }
+}
+

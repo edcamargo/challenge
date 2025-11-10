@@ -1,0 +1,23 @@
+@startuml
+skinparam dpi 150
+left to right direction
+
+package "Solution: challenge.sln" {
+  rectangle "Presentation.Api\n(Web API)" as API #LightBlue
+  rectangle "Application\n(Application services)" as APP #LightGreen
+  rectangle "Domain\n(Entities, VOs)" as DOMAIN #LightYellow
+  rectangle "InfraStructure.Data\n(EF Core, Repos, UnitOfWork)" as DATA #LightCoral
+  rectangle "InfraStructure.Ioc\n(DI wiring)" as IOC #LightGray
+  rectangle "InfraStructure.CrossCutting\n(Validation)" as CROSS #Lavender
+}
+
+API --> APP : uses
+API --> DOMAIN : reads models
+APP --> DOMAIN : uses domain logic
+APP --> DATA : calls repository
+IOC --> API : composes
+IOC --> APP : composes
+DATA --> CROSS : uses validators/helpers
+
+@enduml
+

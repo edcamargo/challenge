@@ -1,0 +1,8 @@
+{
+  "Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null": "\/Users\/local\/source\/challenge\/Application",
+  "Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null": "\/Users\/local\/source\/challenge\/Domain",
+  "InfraStructure.CrossCutting, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null": "\/Users\/local\/source\/challenge\/InfraStructure.CrossCutting",
+  "InfraStructure.Data, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null": "\/Users\/local\/source\/challenge\/InfraStructure.Data",
+  "InfraStructure.Ioc, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null": "\/Users\/local\/source\/challenge\/InfraStructure.Ioc",
+  "Presentation.Api, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null": "\/Users\/local\/source\/challenge\/Presentation.Api"
+}

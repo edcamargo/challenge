@@ -1,0 +1,12 @@
+/Users/local/source/challenge/InfraStructure.CrossCutting/bin/Debug/net9.0/InfraStructure.CrossCutting.deps.json
+/Users/local/source/challenge/InfraStructure.CrossCutting/bin/Debug/net9.0/InfraStructure.CrossCutting.dll
+/Users/local/source/challenge/InfraStructure.CrossCutting/bin/Debug/net9.0/InfraStructure.CrossCutting.pdb
+/Users/local/source/challenge/InfraStructure.CrossCutting/obj/Debug/net9.0/InfraStructure.CrossCutting.csproj.AssemblyReference.cache
+/Users/local/source/challenge/InfraStructure.CrossCutting/obj/Debug/net9.0/InfraStructure.CrossCutting.GeneratedMSBuildEditorConfig.editorconfig
+/Users/local/source/challenge/InfraStructure.CrossCutting/obj/Debug/net9.0/InfraStructure.CrossCutting.AssemblyInfoInputs.cache
+/Users/local/source/challenge/InfraStructure.CrossCutting/obj/Debug/net9.0/InfraStructure.CrossCutting.AssemblyInfo.cs
+/Users/local/source/challenge/InfraStructure.CrossCutting/obj/Debug/net9.0/InfraStructure.CrossCutting.csproj.CoreCompileInputs.cache
+/Users/local/source/challenge/InfraStructure.CrossCutting/obj/Debug/net9.0/InfraStructure.CrossCutting.dll
+/Users/local/source/challenge/InfraStructure.CrossCutting/obj/Debug/net9.0/refint/InfraStructure.CrossCutting.dll
+/Users/local/source/challenge/InfraStructure.CrossCutting/obj/Debug/net9.0/InfraStructure.CrossCutting.pdb
+/Users/local/source/challenge/InfraStructure.CrossCutting/obj/Debug/net9.0/ref/InfraStructure.CrossCutting.dll

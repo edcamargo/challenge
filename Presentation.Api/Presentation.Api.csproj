@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Compile Remove="Controllers\UserController1.cs" />
+      <Compile Remove="Dto\Notification\ResultMapper.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.1.0" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.0" />
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+      <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="9.0.6" />
+      <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="9.0.6" />
+      <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="9.0.6" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Domain\Domain.csproj" />
+      <ProjectReference Include="..\InfraStructure.CrossCutting\InfraStructure.CrossCutting.csproj" />
+      <ProjectReference Include="..\InfraStructure.Data\InfraStructure.Data.csproj" />
+      <ProjectReference Include="..\InfraStructure.Ioc\InfraStructure.Ioc.csproj" />
+    </ItemGroup>
+
+</Project>
