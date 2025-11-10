@@ -12,6 +12,14 @@
             </PendingDiffInfo>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/coverage-badge.svg">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/coverage-badge.svg" />
+              <option name="updatedContent" value="&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;130&quot; height=&quot;20&quot; viewBox=&quot;0 0 130 20&quot;&gt;&#10;  &lt;linearGradient id=&quot;g&quot; x2=&quot;0&quot; y2=&quot;100%&quot;&gt;&#10;    &lt;stop offset=&quot;0&quot; stop-color=&quot;#bbb&quot; stop-opacity=&quot;.1&quot;/&gt;&#10;    &lt;stop offset=&quot;1&quot; stop-opacity=&quot;.1&quot;/&gt;&#10;  &lt;/linearGradient&gt;&#10;  &lt;rect rx=&quot;3&quot; width=&quot;130&quot; height=&quot;20&quot; fill=&quot;#555&quot;/&gt;&#10;  &lt;rect rx=&quot;3&quot; x=&quot;65&quot; width=&quot;65&quot; height=&quot;20&quot; fill=&quot;#4c1&quot;/&gt;&#10;  &lt;rect rx=&quot;3&quot; width=&quot;130&quot; height=&quot;20&quot; fill=&quot;url(#g)&quot;/&gt;&#10;  &lt;g fill=&quot;#fff&quot; text-anchor=&quot;middle&quot; font-family=&quot;DejaVu Sans,Verdana,Geneva,sans-serif&quot; font-size=&quot;11&quot;&gt;&#10;    &lt;text x=&quot;33&quot; y=&quot;14&quot; fill=&quot;#fff&quot;&gt;coverage&lt;/text&gt;&#10;    &lt;text x=&quot;96.5&quot; y=&quot;14&quot; fill=&quot;#000&quot;&gt;90.9%&lt;/text&gt;&#10;  &lt;/g&gt;&#10;&lt;/svg&gt;" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/docs/REFATORACAO_NOTIFICATION_PATTERN.md">
           <value>
             <PendingDiffInfo>

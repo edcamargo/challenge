@@ -1,219 +1,217 @@
-# Challenge — Gerenciamento de Tarefas  
-<p align="left">  
+<!-- Badge de cobertura local -->
+![coverage badge](./coverage-badge.svg)
+
+# Challenge — Gerenciamento de Tarefas
+
+<p align="center">
   <img alt="dotnet" src="https://img.shields.io/badge/.NET-9.0-512BD4?logo=dotnet&logoColor=white" />
   <img alt="xUnit" src="https://img.shields.io/badge/Tests-xUnit-FF4081?logo=xunit&logoColor=white" />
-  <img alt="coverage" src="https://img.shields.io/badge/Coverage-90.9%25-brightgreen" />
 </p>
 
-Uma API em .NET 9 para gerenciamento de tarefas (Users + Tasks) construída com princípios de Clean Architecture: Domain, Application, Infrastructure e Presentation.
+---
 
-- Linguagem: C# (.NET 9)
-- Testes: xUnit + FluentAssertions + NSubstitute
-- Persistência nos testes: EF Core InMemory
+Uma API .NET 9 compacta e bem testada para gerenciamento de Usuários e Tarefas — construída com separação clara entre as camadas Domain, Application e Presentation. Ideal para avaliações técnicas, backend inicial ou referência para padrões de arquitetura limpa.
+
+> TL;DR: base de código pequena e legível com testes sólidos, envelope de API consistente (data + erros) e diagramas de arquitetura claros.
 
 ---
 
-## Sumário
+## Por que um tech lead vai gostar
 
-- [Visão geral](#visão-geral)
-- [Arquitetura & Diagramas](#arquitetura--diagramas)
-- [Como rodar](#como-rodar)
-  - [Rodar local (.NET)](#rodar-local-net)
-  - [Rodar com Docker](#rodar-com-docker)
-- [Endpoints principais (exemplos)](#endpoints-principais-exemplos)
-- [Padronização de respostas (ApiResponse)](#padronização-de-respostas-apiresponse)
-- [Testes e cobertura](#testes-e-cobertura)
-- [Contribuição](#contribuição)
+- ✅ Separação clara de responsabilidades (Domain / Application / Infra / Presentation)
+- ✅ Padrão Notification / ApiResponse para contratos consistentes com clientes
+- ✅ Alta cobertura de testes e testes de integração automatizados (InMemory)
+- ✅ Superfície pequena para revisão — fácil de entender e estender
 
 ---
 
-## Visão geral
+## Links rápidos
 
-A aplicação é organizada por camadas:
-
-- Domain: Entidades, ValueObjects e validações de domínio.
-- Application: DTOs, Services (casos de uso), interfaces e mapeamentos.
-- InfraStructure: Implementações de repositórios, DataContext (EF Core) e IoC.
-- Presentation: API (controllers), middlewares e documentação (Swagger).
-
-Principais decisões:
-- Notification pattern (ApiResponse/ApiError) para retornar validações/erros sem lançar exceções.
-- Repositório + UnitOfWork para controle de persistência.
-- Testes automatizados (unit + integration) com provider InMemory para fácil execução.
+- Arquitetura: `docs/architecture.svg`
+- Entidades: `docs/entities.svg`
+- Executar localmente: Presentation.Api (dotnet run)
+- Docker: build & run (veja Início Rápido)
 
 ---
 
-## Arquitetura & Diagramas
+## Início Rápido
 
-- Diagrama da arquitetura: `docs/architecture.puml` / `docs/architecture.svg`
-- Diagrama das entidades: `docs/entities.puml` / `docs/entities.svg`
+Requisitos: .NET 9 SDK (dev) ou Docker (container).
 
-Abaixo o diagrama simplificado da arquitetura da aplicação:
-
-![Architecture diagram](docs/architecture.svg)
-
-Breve explicação das camadas:
-
-- Presentation.Api — controllers, endpoints e integração com Swagger/UI.
-- Application — serviços que implementam as regras de negócio e tratam validações.
-- Domain — entidades, value-objects e validações de domínio.
-- InfraStructure.Data — DataContext, repositórios e UnitOfWork.
-- InfraStructure.Ioc — composition root e registro de dependências.
-
----
-
-## Como rodar
-
-Requisitos: .NET 9 SDK (para execução local) e Docker (opcional).
-
-### Rodar local (.NET)
+Executar localmente (desenvolvimento):
 
 ```bash
-# restaurar e compilar
+# da raiz do repositório
 dotnet restore
 dotnet build -c Debug
-
-# rodar API (Presentation.Api)
 cd Presentation.Api
 dotnet run --urls "http://localhost:5000"
 ```
 
-Abra `http://localhost:5000/swagger/index.html` para explorar a API em modo de desenvolvimento.
+Abrir: http://localhost:5000/swagger/index.html
 
-### Rodar com Docker
-
-Os comandos abaixo foram fornecidos para criar e executar uma imagem Docker localmente.
-
-1) Build da imagem Docker (a partir da raiz do repositório):
+Executar com Docker (build + run):
 
 ```bash
 docker build -t challenge:latest .
-```
 
-2) Executar a imagem em segundo plano e mapear a porta 8080:
-
-```bash
 docker run -d -p 8080:8080 --name challenge challenge:latest
 ```
 
-Dicas úteis:
+Dicas:
 
 ```bash
-# ver logs do container
+# logs
 docker logs -f challenge
-
-# parar e remover
+# parar + remover
 docker stop challenge && docker rm challenge
-
-# abrir um shell dentro do container
-docker exec -it challenge /bin/bash
 ```
-
-> Observação: a aplicação por padrão usa o provider InMemory nos testes e para execução local; ajuste variáveis de ambiente se quiser conectar a um banco externo.
 
 ---
 
-## Endpoints principais (exemplos)
+## Destaques para Tech Lead (resumo)
 
-Base: `http://localhost:5000/api`
+- Arquitetura: em camadas, DI na raiz de composição (`InfraStructure.Ioc`).
+- Domain: Entidades + ValueObjects com validação interna.
+- Application: Services implementam regras de negócio e retornam `ApiResponse<T>` (resultados de operação + notificações).
+- Presentation: controllers mínimos que mapeiam para services e retornam respostas envelopadas.
 
-### Users
+Se você for revisar este repositório, verifique rapidamente:
 
-- POST /api/users — criar usuário
-- GET /api/users — listar usuários
-- GET /api/users/{id} — buscar por id
-- PUT /api/users/{id} — atualizar
-- DELETE /api/users/{id} — remover
+1. Entidades e validações de domínio (Domain/**)
+2. Services da aplicação (Application/**) — onde vivem as regras de negócio
+3. Controllers (Presentation.Api/Controllers) — devem ser enxutos
+4. Testes (Challenge.Test) — cobertura unit + integration e exemplos
 
-### Tasks
+---
 
-- POST /api/tasks — criar tarefa
-- GET /api/tasks — listar tarefas
-- GET /api/tasks/{id} — obter por id
-- GET /api/tasks/user/{userId} — tarefas de um usuário
-- PUT /api/tasks/{id}/complete — atualizar (rota atual)
-- DELETE /api/tasks/{id} — remover
+## Arquitetura (visual)
 
-Exemplo com `TaskCreateDto` (JSON):
+![Diagrama de arquitetura](docs/architecture.svg)
+
+---
+
+## Contrato da API — Padrão envelope
+
+Todos os endpoints retornam o mesmo envelope JSON:
 
 ```json
 {
-  "title": "Comprar leite",
-  "description": "Ir ao supermercado",
-  "createdAt": "2025-11-10T12:00:00Z",
-  "dueDate": "2025-11-12T12:00:00Z",
-  "userId": "<guid>",
-  "isCompleted": false
+  "data": /* payload de sucesso ou null */, 
+  "erros": [ /* zero ou mais objetos ApiError */ ]
 }
 ```
 
+Formato de `ApiError`:
+
+```json
+{ "statusCode": 400, "message": "Mensagem amigável", "key": "Campo" }
+```
+
+### Por que adotar este padrão
+
+- Respostas previsíveis para os clientes.
+- Tratamento de erros uniforme e simples de traduzir para a UI.
+- Um único ponto para mapear resultados de validação em erros estruturados.
+
 ---
 
-## Padronização de respostas (ApiResponse)
+## Exemplos de requisições e respostas
 
-Todos os controllers retornam `ApiResponse<T>` com duas propriedades principais:
+Criar usuário (POST /api/users)
 
-- `data`: o payload quando sucesso
-- `erros`: array de `ApiError` contendo { statusCode, message, key }
+Requisição:
 
-Exemplo de erro (400):
+```bash
+curl -X POST http://localhost:5000/api/users \
+  -H 'Content-Type: application/json' \
+  -d '{"name":"Edwin","email":"edwin@example.com"}'
+```
+
+Sucesso (201):
+
+```json
+{
+  "data": { "id": "<guid>", "name":"Edwin", "email":"edwin@example.com" },
+  "erros": []
+}
+```
+
+Erro de validação (400):
 
 ```json
 {
   "data": null,
-  "erros": [ { "statusCode": 400, "message": "O título da tarefa é obrigatório.", "key": "title" } ]
+  "erros": [ { "statusCode": 400, "message": "E-mail inválido", "key": "email" } ]
 }
 ```
 
-### ✅ Padrão envelopado — vantagens
+Criar tarefa (POST /api/tasks) — payload conforme `TaskCreateDto`; a resposta segue o mesmo envelope.
 
-Adotamos respostas envelopadas (`ApiResponse<T>`) nos endpoints; abaixo as vantagens principais:
+Listar tarefas por usuário (GET /api/tasks/user/{userId}) — exemplo de retorno:
 
-- 🔄 Consistência: sempre o mesmo envelope (`data` + `erros`) facilita parsing e uso por clientes.
-- 🧩 Centralização de erros: validações e mensagens ficam padronizadas, reduzindo lógica repetida em controllers.
-- 📦 Robustez na evolução da API: permite adicionar campos (meta, paging, links) sem quebrar clientes existentes.
-- 🧪 Testabilidade: facilita asserts nos testes (verificar `data` ou `erros`) e simular cenários de erro/sucesso.
-- 🚦 Mapeamento HTTP claro: o envelope contém informação de status/erro que pode ser usada para mapear códigos HTTP coerentes.
-- 🌍 Localização e contexto: erros podem incluir `key` e mensagens prontas para tradução/consumo pelo cliente.
-- 📈 Observabilidade: facilita registro/telemetria de erros e métricas de negócio ao centralizar mensagens.
+Sucesso (200):
+
+```json
+{
+  "data": [
+    {
+      "id": "11111111-1111-1111-1111-111111111111",
+      "title": "Comprar leite",
+      "description": "Ir ao mercado",
+      "createdAt": "2025-11-01T12:00:00Z",
+      "dueDate": "2025-11-02T12:00:00Z",
+      "userId": "22222222-2222-2222-2222-222222222222",
+      "user": { "id": "22222222-2222-2222-2222-222222222222", "name": "Owner", "email": "owner@example.com" },
+      "isCompleted": false
+    }
+  ],
+  "erros": []
+}
+```
+
+Erro (400 ou 404):
+
+```json
+{
+  "data": null,
+  "erros": [ { "statusCode": 404, "message": "Usuário não encontrado", "key": "userId" } ]
+}
+```
 
 ---
 
-## Testes e cobertura
+## Testes e Cobertura
 
-Executar suíte de testes (local):
+Executar testes localmente:
 
 ```bash
 dotnet test ./challenge.sln --collect:"XPlat Code Coverage"
 ```
 
-Gerar relatório HTML (local) com `reportgenerator` (instale a ferramenta globalmente se necessário):
+Gerar relatório de cobertura legível (local):
 
 ```bash
+# instalar uma vez
 dotnet tool install -g dotnet-reportgenerator-globaltool
+# gerar relatório
 reportgenerator -reports:Challenge.Test/TestResults/*/coverage.cobertura.xml -targetdir:coverage-report -reporttypes "HtmlSummary;BadgeSummary"
 open coverage-report/summary.html
 ```
 
-O arquivo de cobertura XML gerado pelos testes está em `Challenge.Test/TestResults/*/coverage.cobertura.xml`.
-
----
-
-## Métricas de cobertura (última execução)
+**Métricas (última execução):**
 
 - 📊 Coverage (linhas): **90.94%** — 633/696
 - 🔀 Coverage (branches): **72.54%** — 74/102
 
-_Dica:_ rode `reportgenerator` para gerar o badge SVG que pode ser colocado no topo do README.
+---
+
+## Contribuindo
+
+1. Faça fork do repositório, crie branch `feature/...` ou `fix/...`
+2. Execute a suíte de testes e adicione testes para novos comportamentos
+3. Abra um PR com descrição e contexto
 
 ---
 
-## Contribuição
-
-1. Fork → branch `feature/...` ou `fix/...`
-2. Rode os testes localmente e garanta que tudo passe
-3. Abra PR com descrição clara e referências aos arquivos alterados
-
----
-
-<!-- fim do README -->
+<!-- EOF -->
