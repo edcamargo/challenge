@@ -6,6 +6,7 @@
 /Users/local/source/challenge/InfraStructure.CrossCutting/obj/Debug/net9.0/InfraStructure.CrossCutting.AssemblyInfoInputs.cache
 /Users/local/source/challenge/InfraStructure.CrossCutting/obj/Debug/net9.0/InfraStructure.CrossCutting.AssemblyInfo.cs
 /Users/local/source/challenge/InfraStructure.CrossCutting/obj/Debug/net9.0/InfraStructure.CrossCutting.csproj.CoreCompileInputs.cache
+/Users/local/source/challenge/InfraStructure.CrossCutting/obj/Debug/net9.0/InfraStructure.CrossCutting.sourcelink.json
 /Users/local/source/challenge/InfraStructure.CrossCutting/obj/Debug/net9.0/InfraStructure.CrossCutting.dll
 /Users/local/source/challenge/InfraStructure.CrossCutting/obj/Debug/net9.0/refint/InfraStructure.CrossCutting.dll
 /Users/local/source/challenge/InfraStructure.CrossCutting/obj/Debug/net9.0/InfraStructure.CrossCutting.pdb

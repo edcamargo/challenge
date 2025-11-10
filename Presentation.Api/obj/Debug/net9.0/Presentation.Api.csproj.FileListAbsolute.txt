@@ -7,6 +7,8 @@
 /Users/local/source/challenge/Presentation.Api/bin/Debug/net9.0/Presentation.Api.dll
 /Users/local/source/challenge/Presentation.Api/bin/Debug/net9.0/Presentation.Api.pdb
 /Users/local/source/challenge/Presentation.Api/bin/Debug/net9.0/FluentValidation.dll
+/Users/local/source/challenge/Presentation.Api/bin/Debug/net9.0/Microsoft.AspNetCore.JsonPatch.dll
+/Users/local/source/challenge/Presentation.Api/bin/Debug/net9.0/Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 /Users/local/source/challenge/Presentation.Api/bin/Debug/net9.0/Microsoft.AspNetCore.Mvc.Versioning.dll
 /Users/local/source/challenge/Presentation.Api/bin/Debug/net9.0/Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer.dll
 /Users/local/source/challenge/Presentation.Api/bin/Debug/net9.0/Microsoft.EntityFrameworkCore.dll
@@ -19,6 +21,7 @@
 /Users/local/source/challenge/Presentation.Api/bin/Debug/net9.0/Microsoft.Extensions.Primitives.dll
 /Users/local/source/challenge/Presentation.Api/bin/Debug/net9.0/Microsoft.OpenApi.dll
 /Users/local/source/challenge/Presentation.Api/bin/Debug/net9.0/Newtonsoft.Json.dll
+/Users/local/source/challenge/Presentation.Api/bin/Debug/net9.0/Newtonsoft.Json.Bson.dll
 /Users/local/source/challenge/Presentation.Api/bin/Debug/net9.0/Swashbuckle.AspNetCore.Swagger.dll
 /Users/local/source/challenge/Presentation.Api/bin/Debug/net9.0/Swashbuckle.AspNetCore.SwaggerGen.dll
 /Users/local/source/challenge/Presentation.Api/bin/Debug/net9.0/Swashbuckle.AspNetCore.SwaggerUI.dll
@@ -39,6 +42,7 @@
 /Users/local/source/challenge/Presentation.Api/obj/Debug/net9.0/Presentation.Api.csproj.CoreCompileInputs.cache
 /Users/local/source/challenge/Presentation.Api/obj/Debug/net9.0/Presentation.Api.MvcApplicationPartsAssemblyInfo.cs
 /Users/local/source/challenge/Presentation.Api/obj/Debug/net9.0/Presentation.Api.MvcApplicationPartsAssemblyInfo.cache
+/Users/local/source/challenge/Presentation.Api/obj/Debug/net9.0/Presentation.Api.sourcelink.json
 /Users/local/source/challenge/Presentation.Api/obj/Debug/net9.0/scopedcss/bundle/Presentation.Api.styles.css
 /Users/local/source/challenge/Presentation.Api/obj/Debug/net9.0/staticwebassets.build.json
 /Users/local/source/challenge/Presentation.Api/obj/Debug/net9.0/staticwebassets.development.json

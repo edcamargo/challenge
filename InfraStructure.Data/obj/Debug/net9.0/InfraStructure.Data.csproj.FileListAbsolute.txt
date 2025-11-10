@@ -8,6 +8,7 @@
 /Users/local/source/challenge/InfraStructure.Data/obj/Debug/net9.0/InfraStructure.Data.AssemblyInfoInputs.cache
 /Users/local/source/challenge/InfraStructure.Data/obj/Debug/net9.0/InfraStructure.Data.AssemblyInfo.cs
 /Users/local/source/challenge/InfraStructure.Data/obj/Debug/net9.0/InfraStructure.Data.csproj.CoreCompileInputs.cache
+/Users/local/source/challenge/InfraStructure.Data/obj/Debug/net9.0/InfraStructure.Data.sourcelink.json
 /Users/local/source/challenge/InfraStructure.Data/obj/Debug/net9.0/InfraStr.43534C89.Up2Date
 /Users/local/source/challenge/InfraStructure.Data/obj/Debug/net9.0/InfraStructure.Data.dll
 /Users/local/source/challenge/InfraStructure.Data/obj/Debug/net9.0/refint/InfraStructure.Data.dll

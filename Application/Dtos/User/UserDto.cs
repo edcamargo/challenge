@@ -7,7 +7,7 @@ public record UserCreateDto(
     [Required(ErrorMessage = "O nome é obrigatório.")]
     string Name,
 
-    [Required(ErrorMessage = "O nome é obrigatório.")]
+    [Required(ErrorMessage = "O email é obrigatório.")]
     string Email
 )
 {
@@ -22,7 +22,7 @@ public record UserUpdateDto(
     [Required(ErrorMessage = "O nome é obrigatório.")]
     string Name,
 
-    [Required(ErrorMessage = "O nome é obrigatório.")]
+    [Required(ErrorMessage = "O email é obrigatório.")]
     string Email
 )
 {
@@ -39,8 +39,6 @@ public record UserReponseDto(
     string Email
 )
 {
-    public Domain.Entities.User ToEntity()
-        => new Domain.Entities.User(Name, new Email(Email));
 
     public static UserReponseDto FromEntity(Domain.Entities.User user)
         => new UserReponseDto(

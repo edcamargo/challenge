@@ -311,8 +311,14 @@
 /Users/local/source/challenge/Challenge.Test/bin/Debug/net9.0/refs/System.Xml.XPath.dll
 /Users/local/source/challenge/Challenge.Test/bin/Debug/net9.0/refs/System.Xml.XPath.XDocument.dll
 /Users/local/source/challenge/Challenge.Test/bin/Debug/net9.0/refs/WindowsBase.dll
+/Users/local/source/challenge/Challenge.Test/bin/Debug/net9.0/AutoFixture.dll
+/Users/local/source/challenge/Challenge.Test/bin/Debug/net9.0/AutoFixture.Xunit2.dll
+/Users/local/source/challenge/Challenge.Test/bin/Debug/net9.0/Castle.Core.dll
+/Users/local/source/challenge/Challenge.Test/bin/Debug/net9.0/Fare.dll
 /Users/local/source/challenge/Challenge.Test/bin/Debug/net9.0/FluentAssertions.dll
 /Users/local/source/challenge/Challenge.Test/bin/Debug/net9.0/FluentValidation.dll
+/Users/local/source/challenge/Challenge.Test/bin/Debug/net9.0/Microsoft.AspNetCore.JsonPatch.dll
+/Users/local/source/challenge/Challenge.Test/bin/Debug/net9.0/Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 /Users/local/source/challenge/Challenge.Test/bin/Debug/net9.0/Microsoft.AspNetCore.Mvc.Testing.dll
 /Users/local/source/challenge/Challenge.Test/bin/Debug/net9.0/Microsoft.AspNetCore.Mvc.Versioning.dll
 /Users/local/source/challenge/Challenge.Test/bin/Debug/net9.0/Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer.dll
@@ -337,6 +343,8 @@
 /Users/local/source/challenge/Challenge.Test/bin/Debug/net9.0/Microsoft.VisualStudio.TestPlatform.Common.dll
 /Users/local/source/challenge/Challenge.Test/bin/Debug/net9.0/testhost.dll
 /Users/local/source/challenge/Challenge.Test/bin/Debug/net9.0/Newtonsoft.Json.dll
+/Users/local/source/challenge/Challenge.Test/bin/Debug/net9.0/Newtonsoft.Json.Bson.dll
+/Users/local/source/challenge/Challenge.Test/bin/Debug/net9.0/NSubstitute.dll
 /Users/local/source/challenge/Challenge.Test/bin/Debug/net9.0/Swashbuckle.AspNetCore.Swagger.dll
 /Users/local/source/challenge/Challenge.Test/bin/Debug/net9.0/Swashbuckle.AspNetCore.SwaggerGen.dll
 /Users/local/source/challenge/Challenge.Test/bin/Debug/net9.0/Swashbuckle.AspNetCore.SwaggerUI.dll
@@ -430,6 +438,7 @@
 /Users/local/source/challenge/Challenge.Test/obj/Debug/net9.0/Challenge.Test.AssemblyInfoInputs.cache
 /Users/local/source/challenge/Challenge.Test/obj/Debug/net9.0/Challenge.Test.AssemblyInfo.cs
 /Users/local/source/challenge/Challenge.Test/obj/Debug/net9.0/Challenge.Test.csproj.CoreCompileInputs.cache
+/Users/local/source/challenge/Challenge.Test/obj/Debug/net9.0/Challenge.Test.sourcelink.json
 /Users/local/source/challenge/Challenge.Test/obj/Debug/net9.0/Challeng.554B8FCF.Up2Date
 /Users/local/source/challenge/Challenge.Test/obj/Debug/net9.0/Challenge.Test.dll
 /Users/local/source/challenge/Challenge.Test/obj/Debug/net9.0/refint/Challenge.Test.dll

@@ -21,8 +21,6 @@ public static class SwaggerExtensions
 
             c.AddSecurityRequirement(new OpenApiSecurityRequirement { { new OpenApiSecurityScheme { Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" } }, new string[] { } } });
 
-            // NOTE: Do not call SwaggerDoc here for a hard-coded version. ConfigureSwaggerOptions will
-            // create a Swagger document per API version discovered by IApiVersionDescriptionProvider.
         });
 
         // Configure Swagger to generate a doc per API version

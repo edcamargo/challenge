@@ -8,7 +8,8 @@ using Swashbuckle.AspNetCore.Annotations;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllers();
+// Use NewtonsoftJson to avoid System.Text.Json PipeWriter issues in test server
+builder.Services.AddControllers().AddNewtonsoftJson();
 
 // InMemory DbContext for demo/testing
 builder.Services.AddDbContext<DataContext>(options => options.UseInMemoryDatabase("TodoDb"));

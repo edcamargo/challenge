@@ -1,11 +1,10 @@
-using Application.Custom;
 using Application.Dtos.User;
 using Application.Services.Interfaces;
 using Domain.Entities;
 using Domain.Intefaces.Repositories;
 using Domain.Intefaces;
-using Domain.Validations;
-using FluentValidation.Results;
+using Application.Common;
+using System.Linq;
 
 namespace Application.Services;
 
@@ -20,68 +19,82 @@ public class UserService : IUserService
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<OperationResult<User>> Add(UserCreateDto dto, CancellationToken cancellationToken = default)
+    public async Task<ApiResponse<User>> Add(UserCreateDto dto)
     {
         var user = dto.ToEntity();
-        var userValid = user.EhValido();
+        
+        // Validação da entidade
+        var validation = user.EhValido();
+        if (!validation.IsValid)
+            return ApiResponse<User>.ValidationFailure(validation);
 
-        if (!userValid.IsValid)
-            return new OperationResult<User>(user, userValid!);
+        // Regra de negócio: email único
+        if (await ExistsByEmail(user.Email.Endereco))
+            return ApiResponse<User>.Error(400, "E-mail já cadastrado.", "Email");
 
-        var addUser = await _userRepository.AddAsync(user, cancellationToken);
-        await _unitOfWork.SaveChangesAsync(cancellationToken);
-        return new OperationResult<User>(addUser, userValid);
+        var addedUser = await _userRepository.AddAsync(user);
+        await _unitOfWork.SaveChangesAsync();
+
+        return ApiResponse<User>.Success(addedUser);
     }
 
-    public async Task<OperationResult<User>> Update(Guid id, UserUpdateDto dto, CancellationToken cancellationtoken = default)
+    public async Task<ApiResponse<User>> Update(Guid id, UserUpdateDto dto)
     {
+        var existingUser = await _userRepository.GetByIdAsync(id);
+        if (existingUser is null)
+            return ApiResponse<User>.NotFound("Usuário não encontrado.");
+
         var entity = dto.ToEntity();
-        var uservalid = entity.EhValido();
+        entity.Id = id; // Garante que o Id seja o correto
+        
+        // Validação da entidade
+        var validation = entity.EhValido();
+        if (!validation.IsValid)
+            return ApiResponse<User>.ValidationFailure(validation);
 
-        if (!uservalid.IsValid)
-            return new OperationResult<User>(entity, uservalid!);
-
-        var user = await _userRepository.GetByIdAsync(id, cancellationtoken);
-
-        if (user is null)
+        // Regra de negócio: email único (se mudou)
+        if (existingUser.Email.Endereco != entity.Email.Endereco && 
+            await ExistsByEmail(entity.Email.Endereco))
         {
-            var validationresult = new ValidationResult();
-            ActionErrorCustom.ActionError(validationresult, "id", "usuário não encontrado.");
-            return new OperationResult<User>(Guid.Empty, validationresult);
+            return ApiResponse<User>.Error(400, "E-mail já cadastrado.", "Email");
         }
 
-        var updateduser = await _userRepository.UpdateAsync(entity, cancellationtoken);
-        await _unitOfWork.SaveChangesAsync(cancellationtoken);
-        return new OperationResult<User>(updateduser, uservalid);
+        var updatedUser = await _userRepository.UpdateAsync(entity);
+        await _unitOfWork.SaveChangesAsync();
+
+        return ApiResponse<User>.Success(updatedUser);
     }
 
-    public async Task<User?> GetById(Guid id, CancellationToken cancellationToken = default)
+    public async Task<ApiResponse<User>> GetById(Guid id)
     {
-        return await _userRepository.GetByIdAsync(id, cancellationToken);
-    }
-
-    public async Task<OperationResult<bool>> Delete(Guid id, CancellationToken cancellationToken = default)
-    {
-        var user = await _userRepository.GetByIdAsync(id, cancellationToken);
-
+        var user = await _userRepository.GetByIdAsync(id);
         if (user is null)
-        {
-            var validationresult = new ValidationResult();
-            ActionErrorCustom.ActionError(validationresult, "id", "usuário não encontrado.");
-            return new OperationResult<bool>(Guid.Empty, validationresult);
-        }
+            return ApiResponse<User>.NotFound("Usuário não encontrado.");
 
-        var resultado = user.EhValido();
-        if (!resultado.IsValid)
-            return new OperationResult<bool>(false, resultado!);
-
-        await _userRepository.DeleteAsync(user, cancellationToken);
-        var affected = await _unitOfWork.SaveChangesAsync(cancellationToken);
-        return new OperationResult<bool>(affected > 0, resultado);
+        return ApiResponse<User>.Success(user);
     }
 
-    public async Task<IEnumerable<User>> GetAll(int pageNumber, int pageSize, CancellationToken cancellationToken = default)
+    public async Task<ApiResponse<bool>> Delete(Guid id)
     {
-        return await _userRepository.GetAllAsync(cancellationToken);
+        var user = await _userRepository.GetByIdAsync(id);
+        if (user is null)
+            return ApiResponse<bool>.NotFound("Usuário não encontrado.");
+
+        await _userRepository.DeleteAsync(user);
+        var affected = await _unitOfWork.SaveChangesAsync();
+
+        return ApiResponse<bool>.Success(affected > 0);
+    }
+
+    public async Task<ApiResponse<IEnumerable<User>>> GetAll(int pageNumber, int pageSize)
+    {
+        var users = await _userRepository.GetAllAsync();
+        return ApiResponse<IEnumerable<User>>.Success(users);
+    }
+    
+    private async Task<bool> ExistsByEmail(string email)
+    {
+        var users = await _userRepository.FindAsync(u => u.Email.Endereco == email);
+        return users.Any();
     }
 }

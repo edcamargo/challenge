@@ -12,8 +12,8 @@ public class TaskRepository : Repository<Tasks>, ITaskRepository
         _context = context;
     }
 
-    public async Task<IEnumerable<Tasks>> GetAllByUserIdAsync(Guid userId, CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<Tasks>> GetAllByUserIdAsync(Guid userId)
     {
-        return await _context.Set<Tasks>().Where(t => t.UserId == userId).ToListAsync(cancellationToken);
+        return await _context.Set<Tasks>().Where(t => t.UserId == userId).ToListAsync();
     }
 }
