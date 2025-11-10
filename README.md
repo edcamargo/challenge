@@ -3,7 +3,7 @@
 
 # Challenge — Gerenciamento de Tarefas
 
-<p align="center">
+<p align="center">![img.png](img.png)
   <img alt="dotnet" src="https://img.shields.io/badge/.NET-9.0-512BD4?logo=dotnet&logoColor=white" />
   <img alt="xUnit" src="https://img.shields.io/badge/Tests-xUnit-FF4081?logo=xunit&logoColor=white" />
 </p>
@@ -32,7 +32,14 @@ Uma API .NET 9 compacta e bem testada para gerenciamento de Usuários e Tarefas 
 - Executar localmente: Presentation.Api (dotnet run)
 - Docker: build & run (veja Início Rápido)
 
----
+<!-- Título e descrição para a imagem do Swagger -->
+### Documentação interativa (Swagger UI)
+<p align="center">
+  <em>Explore os endpoints, modelos e exemplos interativos da API diretamente pelo Swagger UI.</em>
+</p>
+<p align="center" style="margin-top:320px;">
+  <img src="docs/swagger.png" alt="Swagger UI" style="max-width:100%;height:auto;" />
+</p>
 
 ## Início Rápido
 
