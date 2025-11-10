@@ -42,7 +42,7 @@ jobs:
 
       - name: Generate HTML coverage report
         run: |
-          reportgenerator -reports:./TestResults/**/coverage.cobertura.xml -targetdir:coverage-report -reporttypes:HtmlSummary;BadgeSummary
+          reportgenerator -reports:./TestResults/**/coverage.cobertura.xml -targetdir:coverage-report -reporttypes 'HtmlSummary;BadgeSummary'
 
       - name: Upload coverage report artifact
         uses: actions/upload-artifact@v4
@@ -86,4 +86,3 @@ jobs:
         with:
           name: test-results
           path: TestResults
-
