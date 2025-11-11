@@ -49,7 +49,7 @@ Uma API RESTful completa para gerenciamento de tarefas e usuários, desenvolvida
 
 </div>
 
-### 🎯 Por que Tech Leads vão adorar
+### 🎯 Diferenciais do Projeto
 
 - ✅ **Separação clara de responsabilidades** (Domain / Application / Infrastructure / Presentation)
 - ✅ **Padrão Notification** consistente para tratamento de erros e validações
@@ -225,8 +225,7 @@ curl -X POST http://localhost:5000/api/users \
 
 ### ✅ Gerenciamento de Tarefas
 
-<details>
-<summary><strong>POST /api/tasks</strong> - Criar tarefa</summary>
+**POST /api/tasks** - Criar tarefa
 
 **Requisição:**
 ```bash
@@ -239,10 +238,24 @@ curl -X POST http://localhost:5000/api/tasks \
     "userId": "123e4567-e89b-12d3-a456-426614174000"
   }'
 ```
-</details>
 
-<details>
-<summary><strong>GET /api/tasks/user/{userId}</strong> - Listar tarefas do usuário</summary>
+**Resposta de Sucesso (201):**
+```json
+{
+  "data": {
+    "id": "11111111-1111-1111-1111-111111111111",
+    "title": "Implementar feature X",
+    "description": "Desenvolver nova funcionalidade",
+    "createdAt": "2025-11-11T12:00:00Z",
+    "dueDate": "2025-11-15T12:00:00Z",
+    "userId": "123e4567-e89b-12d3-a456-426614174000",
+    "isCompleted": false
+  },
+  "erros": []
+}
+```
+
+**GET /api/tasks/user/{userId}** - Listar tarefas do usuário
 
 **Resposta de Sucesso (200):**
 ```json
@@ -279,42 +292,118 @@ curl -X POST http://localhost:5000/api/tasks \
     }
   ]
 }
-```
-</details>
 
----
+## 🧪 Testes e Cobertura
 
-## Testes e Cobertura
-
-Executar testes localmente:
+### 🚀 Executar Testes
 
 ```bash
+# Executar todos os testes
 dotnet test ./challenge.sln --collect:"XPlat Code Coverage"
+
+# Executar apenas testes unitários
+dotnet test ./Challenge.Test/Unit/
+
+# Executar apenas testes de integração
+dotnet test ./Challenge.Test/Integration/
 ```
 
-Gerar relatório de cobertura legível (local):
+### 📊 Relatórios de Cobertura
 
 ```bash
-# instalar uma vez
+# Instalar ferramenta de relatórios (uma vez)
 dotnet tool install -g dotnet-reportgenerator-globaltool
-# gerar relatório
-reportgenerator -reports:Challenge.Test/TestResults/*/coverage.cobertura.xml -targetdir:coverage-report -reporttypes "HtmlSummary;BadgeSummary"
+
+# Gerar relatório HTML
+reportgenerator \
+  -reports:Challenge.Test/TestResults/*/coverage.cobertura.xml \
+  -targetdir:coverage-report \
+  -reporttypes "HtmlSummary;BadgeSummary"
+
+# Visualizar relatório
 open coverage-report/summary.html
 ```
 
-**Métricas (última execução):**
+### 📈 Métricas Atuais
 
-- 📊 Coverage (linhas): **90.94%** — 633/696
-- 🔀 Coverage (branches): **72.54%** — 74/102
+<div align="center">
+
+| Métrica | Valor | Status |
+|---------|-------|---------|
+| 📊 **Cobertura de Linhas** | **90.94%** (633/696) | ✅ Excelente |
+| 🔀 **Cobertura de Branches** | **72.54%** (74/102) | ✅ Boa |
+| 🧪 **Tipos de Teste** | Unit + Integration | ✅ Completo |
+| ⚡ **CI/CD** | GitHub Actions | ✅ Automatizado |
+
+</div>
+
+### 🎯 Estrutura dos Testes
+
+```
+📁 Challenge.Test/
+├── Unit/                    # Testes unitários
+│   ├── Domain/             # Entidades e validações
+│   ├── Application/        # Services e DTOs
+│   └── Presentation/       # Controllers
+└── Integration/            # Testes end-to-end
+    ├── Infra/              # Repositórios
+    └── Presentation/       # API completa
+```
+
+## 🤝 Contribuindo
+
+Contribuições são bem-vindas! Siga estes passos:
+
+### 🔧 Setup para Desenvolvimento
+
+1. **Fork** o repositório
+2. **Clone** seu fork localmente
+3. **Crie** uma branch para sua feature:
+   ```bash
+   git checkout -b feature/nova-funcionalidade
+   # ou
+   git checkout -b fix/correcao-bug
+   ```
+
+### ✅ Checklist antes do PR
+
+- [ ] ✅ Testes passando (`dotnet test`)
+- [ ] 📝 Novos testes para funcionalidades adicionadas
+- [ ] 📋 Documentação atualizada se necessário
+- [ ] 🏗️ Código seguindo os padrões da arquitetura
+- [ ] 🧪 Cobertura de testes mantida acima de 85%
+
+### 📬 Abrindo um Pull Request
+
+1. **Push** sua branch para seu fork
+2. **Abra** um PR com:
+   - Título descritivo
+   - Descrição do que foi implementado/corrigido
+   - Screenshots se aplicável
+   - Referência a issues relacionadas
 
 ---
 
-## Contribuindo
+## 📚 Links Úteis
 
-1. Faça fork do repositório, crie branch `feature/...` ou `fix/...`
-2. Execute a suíte de testes e adicione testes para novos comportamentos
-3. Abra um PR com descrição e contexto
+- 🏗️ [Diagramas de Arquitetura](docs/architecture.svg)
+- 🗂️ [Modelo de Entidades](docs/entities.svg)
+- 📋 [Documentação Swagger](http://localhost:5000/swagger) *(com a API rodando)*
+- 🐳 [Dockerfile](./Dockerfile)
+- ⚙️ [Pipeline CI/CD](.github/workflows/ci.yml)
 
 ---
 
-<!-- EOF -->
+## 📄 Licença
+
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+
+---
+
+<div align="center">
+  
+**🚀 Desenvolvido com .NET 9 e muito ☕**
+
+*Se este projeto foi útil, considere dar uma ⭐!*
+
+</div>
