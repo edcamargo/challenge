@@ -12,31 +12,6 @@ namespace Challenge.Test.Unit.Presentation.Controllers
     public class TasksControllerTests
     {
         [Fact]
-        public async Task GetAll_ReturnsOk_WithMappedTasks()
-        {
-            // Arrange
-            var svc = Substitute.For<ITaskService>();
-            var userId = Guid.NewGuid();
-            var tasks = new List<Tasks>
-            {
-                Tasks.Create("Task A", "desc", DateTime.UtcNow.AddDays(1), userId)
-            };
-            svc.GetAll(1, 100).Returns(Task.FromResult(ApiResponse<IEnumerable<Tasks>>.Success(tasks)));
-
-            var controller = new TasksController(svc);
-
-            // Act
-            var action = await controller.GetAll();
-
-            // Assert
-            action.Should().BeOfType<OkObjectResult>();
-            var ok = action as OkObjectResult;
-            var body = ok!.Value as ApiResponse<IEnumerable<TaskResponseDto>>;
-            body!.Data.Should().NotBeNull();
-            body.Data!.First().Title.Should().Be("Task A");
-        }
-
-        [Fact]
         public async Task GetAllByUserId_ReturnsOk_WithUserTasks()
         {
             var svc = Substitute.For<ITaskService>();
@@ -82,7 +57,7 @@ namespace Challenge.Test.Unit.Presentation.Controllers
         {
             var svc = Substitute.For<ITaskService>();
             var userId = Guid.NewGuid();
-            var dto = new TaskCreateDto("New", "d", DateTime.UtcNow, DateTime.UtcNow.AddDays(2), userId, false);
+            var dto = new TaskCreateDto("New", "d", DateTime.UtcNow, DateTime.UtcNow.AddDays(2), userId);
             var created = Tasks.Create(dto.Title, dto.Description, dto.DueDate, dto.UserId);
             svc.Add(Arg.Any<TaskCreateDto>()).Returns(Task.FromResult(ApiResponse<Tasks>.Success(created)));
 
@@ -101,12 +76,12 @@ namespace Challenge.Test.Unit.Presentation.Controllers
             var svc = Substitute.For<ITaskService>();
             var userId = Guid.NewGuid();
             var task = Tasks.Create("TU", "d", DateTime.UtcNow.AddDays(4), userId);
-            var updateDto = new TaskUpdateDto(task.Id, "TU", "d", task.CreatedAt, task.DueDate, task.UserId, true);
-            svc.Update(task.Id, updateDto).Returns(Task.FromResult(ApiResponse<Tasks>.Success(task)));
+            var updateDto = new TaskUpdateDto(task.Id, "TU", "d", task.CreatedAt, task.DueDate, task.UserId);
+            svc.Update(task.Id, updateDto.Id).Returns(Task.FromResult(ApiResponse<Tasks>.Success(task)));
 
             var controller = new TasksController(svc);
 
-            var action = await controller.Update(task.Id, updateDto);
+            var action = await controller.Update(task.Id, updateDto.Id);
 
             action.Should().BeOfType<OkObjectResult>();
             var ok = action as OkObjectResult;
@@ -149,7 +124,7 @@ namespace Challenge.Test.Unit.Presentation.Controllers
         {
             var svc = Substitute.For<ITaskService>();
             var userId = Guid.NewGuid();
-            var dto = new TaskCreateDto("", "d", DateTime.UtcNow, DateTime.UtcNow.AddDays(2), userId, false);
+            var dto = new TaskCreateDto("", "d", DateTime.UtcNow, DateTime.UtcNow.AddDays(2), userId);
             svc.Add(Arg.Any<TaskCreateDto>()).Returns(Task.FromResult(ApiResponse<Tasks>.Failure(new ApiError(400, "Validation"))));
 
             var controller = new TasksController(svc);

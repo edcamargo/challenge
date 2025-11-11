@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("InfraStructure.Ioc")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+47a9d49fe4364f6efa6b55e89ec9f7db322e3781")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9afd6af41d63ed970b470b50103f7f809907968d")]
 [assembly: System.Reflection.AssemblyProductAttribute("InfraStructure.Ioc")]
 [assembly: System.Reflection.AssemblyTitleAttribute("InfraStructure.Ioc")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

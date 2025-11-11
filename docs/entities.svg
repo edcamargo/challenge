@@ -1,57 +1,57 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="900" height="360" viewBox="0 0 900 360">
   <style>
-    .box { fill: #ffffff; stroke: #2b6cb0; stroke-width: 2px; rx: 6px; }
-    .title { font: bold 16px sans-serif; fill: #2b6cb0; }
-    .attr { font: 13px sans-serif; fill: #333333; }
-    .note { font: 12px sans-serif; fill: #555555; }
-    .arrow { stroke: #2b6cb0; stroke-width: 2px; marker-end: url(#arrowhead); }
+    .box { fill:#f8f9fb; stroke:#2b7a78; stroke-width:2; rx:8; }
+    .title { font: 16px/1.2 'Segoe UI', Roboto, Arial; font-weight:700; fill:#173f3f }
+    .attr { font: 13px/1.2 'Segoe UI', Roboto, Arial; fill:#062f2f }
+    .note { font: 12px/1.2 'Segoe UI', Roboto, Arial; fill:#333 }
+    .link { stroke:#6b6b6b; stroke-width:2; marker-end:url(#arrow);} 
   </style>
-
   <defs>
-    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#2b6cb0" />
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6b6b6b" />
     </marker>
   </defs>
 
   <!-- User box -->
-  <g transform="translate(80,40)">
-    <rect class="box" width="300" height="150" />
-    <text class="title" x="18" y="30">User</text>
-    <text class="attr" x="18" y="58">Id : Guid</text>
-    <text class="attr" x="18" y="78">Name : string</text>
-    <text class="attr" x="18" y="98">Email : Email (ValueObject)</text>
-    <text class="attr" x="18" y="118">CreatedAt : DateTime</text>
-  </g>
+  <rect x="40" y="40" width="320" height="140" class="box" />
+  <text x="64" y="72" class="title">User</text>
+  <text x="64" y="98" class="attr">● Guid Id</text>
+  <text x="64" y="118" class="attr">● string Name</text>
+  <text x="64" y="138" class="attr">● Email Email</text>
+  <text x="64" y="158" class="attr">● DateTime CreatedAt</text>
 
   <!-- Tasks box -->
-  <g transform="translate(520,40)">
-    <rect class="box" width="320" height="190" />
-    <text class="title" x="18" y="30">Tasks</text>
-    <text class="attr" x="18" y="58">Id : Guid</text>
-    <text class="attr" x="18" y="78">Title : string</text>
-    <text class="attr" x="18" y="98">Description : string?</text>
-    <text class="attr" x="18" y="118">CreatedAt : DateTime</text>
-    <text class="attr" x="18" y="138">DueDate : DateTime?</text>
-    <text class="attr" x="18" y="158">UserId : Guid</text>
-    <text class="attr" x="18" y="178">IsCompleted : bool</text>
-  </g>
+  <rect x="420" y="40" width="360" height="200" class="box" />
+  <text x="444" y="72" class="title">Tasks</text>
+  <text x="444" y="98" class="attr">● Guid Id</text>
+  <text x="444" y="118" class="attr">● string Title</text>
+  <text x="444" y="138" class="attr">● string? Description</text>
+  <text x="444" y="158" class="attr">● DateTime CreatedAt</text>
+  <text x="444" y="178" class="attr">● DateTime? DueDate</text>
+  <text x="444" y="198" class="attr">● Guid UserId</text>
+  <text x="444" y="218" class="attr">● bool IsCompleted</text>
 
-  <!-- Relationship arrow and label -->
-  <g>
-    <line class="arrow" x1="380" y1="115" x2="520" y2="115" />
-    <text class="note" x="410" y="100">1</text>
-    <text class="note" x="510" y="100">*</text>
-    <text class="note" x="405" y="135">User "1" ---- "*" Tasks</text>
-  </g>
+  <!-- Relationship arrow -->
+  <path d="M360 110 L420 110" class="link" />
+  <text x="310" y="100" class="note">1</text>
+  <text x="400" y="100" class="note">*</text>
+  <text x="300" y="90" class="note">has</text>
 
-  <!-- Notes -->
-  <g transform="translate(80,220)">
-    <rect x="0" y="0" width="760" height="110" rx="6" fill="#f7fafc" stroke="#e2e8f0" />
-    <text class="note" x="12" y="22">ValueObject: Email (Endereco : string, EhValido())</text>
-    <text class="note" x="12" y="44">Tasks validation summary: Title required (2..200), Description max 1000, DueDate must be future if present, UserId required.</text>
-    <text class="note" x="12" y="66">Domain methods: Tasks.MarkCompleted(), Tasks.MarkPending()</text>
-  </g>
+  <!-- Email ValueObject note -->
+  <rect x="40" y="200" width="260" height="110" fill="#fff7d6" stroke="#c48b00" stroke-width="1.5" rx="6" />
+  <text x="56" y="224" class="title" style="font-size:13px;">ValueObject: Email</text>
+  <text x="56" y="246" class="note">- Endereco : string</text>
+  <text x="56" y="266" class="note">- EhValido()</text>
 
+  <!-- Tasks validation note -->
+  <rect x="420" y="250" width="360" height="90" fill="#eef8ff" stroke="#1b6fb1" stroke-width="1.5" rx="6" />
+  <text x="444" y="272" class="title" style="font-size:13px;">Validations</text>
+  <text x="444" y="292" class="note">- Title: required, length 2..200</text>
+  <text x="444" y="310" class="note">- Description: max 1000</text>
+  <text x="444" y="328" class="note">- DueDate: if set, must be future</text>
+  <text x="444" y="346" class="note">- UserId: required</text>
+
+  <!-- Footer -->
+  <text x="40" y="345" class="note" style="font-size:11px; fill:#666">Diagrama simplificado das entidades e validações (gerado a partir de docs/entities.puml)</text>
 </svg>
 

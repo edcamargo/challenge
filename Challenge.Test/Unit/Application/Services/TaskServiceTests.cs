@@ -20,7 +20,7 @@ namespace Challenge.Test.Unit.Application.Services
             var user = User.Create("U", "u@example.com");
             userRepo.GetByIdAsync(Arg.Any<Guid>()).Returns(Task.FromResult<User?>(user));
 
-            var dto = new TaskCreateDto("TaskTitle", "d", DateTime.UtcNow, DateTime.UtcNow.AddDays(1), user.Id, false);
+            var dto = new TaskCreateDto("TaskTitle", "d", DateTime.UtcNow, DateTime.UtcNow.AddDays(1), user.Id);
             var entity = dto.ToEntity();
 
             // sanity check: ensure entity validation passes in test
@@ -49,7 +49,7 @@ namespace Challenge.Test.Unit.Application.Services
 
             userRepo.GetByIdAsync(Arg.Any<Guid>()).Returns(Task.FromResult<User?>(null));
 
-            var dto = new TaskCreateDto("T", "d", DateTime.UtcNow, DateTime.UtcNow.AddDays(1), Guid.NewGuid(), false);
+            var dto = new TaskCreateDto("T", "d", DateTime.UtcNow, DateTime.UtcNow.AddDays(1), Guid.NewGuid());
             var svc = new TaskService(taskRepo, userRepo, uow);
 
             var res = await svc.Add(dto);
@@ -69,7 +69,7 @@ namespace Challenge.Test.Unit.Application.Services
             var user = User.Create("U2", "u2@example.com");
             userRepo.GetByIdAsync(Arg.Any<Guid>()).Returns(Task.FromResult<User?>(user));
 
-            var dto = new TaskCreateDto("", "d", DateTime.UtcNow, DateTime.UtcNow.AddDays(1), user.Id, false); // invalid title
+            var dto = new TaskCreateDto("", "d", DateTime.UtcNow, DateTime.UtcNow.AddDays(1), user.Id); // invalid title
             var svc = new TaskService(taskRepo, userRepo, uow);
 
             var res = await svc.Add(dto);
@@ -88,30 +88,11 @@ namespace Challenge.Test.Unit.Application.Services
             taskRepo.GetByIdAsync(Arg.Any<Guid>()).Returns(Task.FromResult<Tasks?>(null));
 
             var svc = new TaskService(taskRepo, userRepo, uow);
-            var res = await svc.Update(Guid.NewGuid(), new TaskUpdateDto(Guid.NewGuid(), "T", "d", DateTime.UtcNow, DateTime.UtcNow.AddDays(1), Guid.NewGuid(), false));
+            var res = await svc.Update(Guid.NewGuid(), Guid.NewGuid());
 
             res.Should().NotBeNull();
             res.Erros.Should().NotBeEmpty();
             res.Erros[0].StatusCode.Should().Be(404);
-        }
-
-        [Fact]
-        public async Task Update_ReturnsValidationFailure_WhenInvalid()
-        {
-            var taskRepo = Substitute.For<ITaskRepository>();
-            var userRepo = Substitute.For<IUserRepository>();
-            var uow = Substitute.For<IUnitOfWork>();
-
-            var task = Tasks.Create("TaskExisting", "d", DateTime.UtcNow.AddDays(1), Guid.NewGuid());
-            taskRepo.GetByIdAsync(task.Id).Returns(Task.FromResult<Tasks?>(task));
-
-            var svc = new TaskService(taskRepo, userRepo, uow);
-            var dto = new TaskUpdateDto(task.Id, "", "d", task.CreatedAt, task.DueDate, task.UserId, false);
-            var res = await svc.Update(task.Id, dto);
-
-            res.Should().NotBeNull();
-            res.Erros.Should().NotBeEmpty();
-            res.Erros[0].StatusCode.Should().Be(400);
         }
 
         [Fact]

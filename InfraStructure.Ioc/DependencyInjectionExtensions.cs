@@ -1,6 +1,8 @@
 using Application.Services;
 using Application.Services.Interfaces;
+using Domain.Intefaces;
 using Domain.Intefaces.Repositories;
+using InfraStructure.Data;
 using InfraStructure.Data.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,12 +24,7 @@ public static class DependencyInjectionExtensions
     {
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<ITaskService, TaskService>();
-        
-        // Register cross-cutting services
-        //services.AddScoped<IEncryptions, Encryptions>();
-        
-        // Password hasher (BCrypt)
-        //services.AddScoped<IPasswordHasher, BcryptPasswordHasher>();
+
         return services;
     }
 
@@ -35,7 +32,7 @@ public static class DependencyInjectionExtensions
     {
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<ITaskRepository, TaskRepository>();
-        services.AddScoped<Domain.Intefaces.IUnitOfWork, InfraStructure.Data.UnitOfWork>();
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         return services;
     }

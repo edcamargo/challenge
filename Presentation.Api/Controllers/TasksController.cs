@@ -17,14 +17,6 @@ public class TasksController : ControllerBase
         _taskService = taskService;
     }
 
-    [HttpGet]
-    [ProducesResponseType(typeof(ApiResponse<IEnumerable<TaskResponseDto>>), 200)]
-    public async Task<IActionResult> GetAll()
-    {
-        var response = await _taskService.GetAll(1, 100);
-        return response.ToActionResult(TaskResponseDto.FromEntity);
-    }
-
     [HttpGet("user/{userId:guid}")]
     [ProducesResponseType(typeof(ApiResponse<IEnumerable<TaskResponseDto>>), 200)]
     [ProducesResponseType(typeof(ApiResponse<object>), 404)]
@@ -59,9 +51,9 @@ public class TasksController : ControllerBase
     [ProducesResponseType(typeof(ApiResponse<TaskResponseDto>), 200)]
     [ProducesResponseType(typeof(ApiResponse<object>), 400)]
     [ProducesResponseType(typeof(ApiResponse<object>), 404)]
-    public async Task<IActionResult> Update(Guid id, [FromBody] TaskUpdateDto dto)
+    public async Task<IActionResult> Update(Guid id, [FromBody] Guid taskId)
     {
-        var response = await _taskService.Update(id, dto);
+        var response = await _taskService.Update(id, taskId);
         return response.ToActionResult(TaskResponseDto.FromEntity);
     }
 

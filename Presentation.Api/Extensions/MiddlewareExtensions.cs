@@ -20,8 +20,8 @@ public static class MiddlewareExtensions
             .AllowAnyHeader());
 
         // Authentication & Authorization
-        app.UseAuthentication();
-        app.UseAuthorization();
+        //app.UseAuthentication();
+        //app.UseAuthorization();
 
         // Swagger UI and JSON
         app.UseSwaggerDocumentation();

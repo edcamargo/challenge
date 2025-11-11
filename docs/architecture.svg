@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="420" viewBox="0 0 1000 420">
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="320" viewBox="0 0 1000 320">
   <style>
     .box { fill:#f0f8ff; stroke:#333; stroke-width:1.5; rx:6; }
     .small { font: 12px/1.2 'Segoe UI', Roboto, Arial; }
@@ -11,41 +11,39 @@
     </marker>
   </defs>
 
-  <!-- Boxes -->
-  <rect x="40" y="30" width="260" height="80" class="box" />
-  <text x="70" y="55" class="title">Presentation.Api</text>
-  <text x="70" y="75" class="small">Controllers, DTOs, Swagger</text>
+  <!-- Presentation -->
+  <rect x="40" y="30" width="240" height="80" class="box" />
+  <text x="64" y="55" class="title">Presentation.Api</text>
+  <text x="64" y="75" class="small">Controllers, DTOs, Swagger</text>
 
-  <rect x="360" y="30" width="260" height="80" class="box" />
-  <text x="400" y="55" class="title">Application</text>
-  <text x="400" y="75" class="small">Services / Use cases</text>
+  <!-- Application -->
+  <rect x="340" y="30" width="240" height="80" class="box" />
+  <text x="364" y="55" class="title">Application</text>
+  <text x="364" y="75" class="small">Services / Use cases</text>
 
-  <rect x="680" y="30" width="260" height="80" class="box" />
-  <text x="720" y="55" class="title">Domain</text>
-  <text x="720" y="75" class="small">Entities, Value Objects</text>
+  <!-- Domain -->
+  <rect x="640" y="30" width="240" height="80" class="box" />
+  <text x="664" y="55" class="title">Domain</text>
+  <text x="664" y="75" class="small">Entities, Value Objects</text>
 
-  <rect x="240" y="150" width="260" height="80" class="box" />
-  <text x="260" y="175" class="title">InfraStructure.Ioc</text>
-  <text x="260" y="195" class="small">DI / Composition</text>
+  <!-- InfraStructure.Ioc -->
+  <rect x="140" y="150" width="260" height="80" class="box" />
+  <text x="160" y="175" class="title">InfraStructure.Ioc</text>
+  <text x="160" y="195" class="small">DI / Composition Root</text>
 
-  <rect x="540" y="150" width="260" height="80" class="box" />
-  <text x="560" y="175" class="title">InfraStructure.Data</text>
-  <text x="560" y="195" class="small">EF Core, Repos, UnitOfWork</text>
+  <!-- InfraStructure.Data -->
+  <rect x="560" y="150" width="260" height="80" class="box" />
+  <text x="580" y="175" class="title">InfraStructure.Data</text>
+  <text x="580" y="195" class="small">EF Core, Repos, UnitOfWork</text>
 
-  <rect x="40" y="270" width="760" height="80" class="box" />
-  <text x="60" y="300" class="title">InfraStructure.CrossCutting</text>
-  <text x="60" y="320" class="small">Validation, helpers</text>
-
-  <!-- Arrows -->
-  <path class="arrow" d="M300 70 L360 70" />
-  <path class="arrow" d="M620 70 L680 70" />
-  <path class="arrow" d="M420 110 L420 150" />
-  <path class="arrow" d="M700 110 L700 150" />
-  <path class="arrow" d="M300 190 L240 190" />
-  <path class="arrow" d="M600 190 L540 190" />
-  <path class="arrow" d="M660 230 L660 270" />
+  <!-- Arrows between layers -->
+  <path class="arrow" d="M280 70 L340 70" />
+  <path class="arrow" d="M580 70 L640 70" />
+  <path class="arrow" d="M460 110 L460 150" />
+  <path class="arrow" d="M760 110 L760 150" />
+  <path class="arrow" d="M300 190 L300 150" />
+  <path class="arrow" d="M700 190 L700 150" />
 
   <!-- Footer legend -->
-  <text x="40" y="370" class="small">Diagrama simplificado das dependências entre camadas do projeto.</text>
+  <text x="40" y="270" class="small">Diagrama simplificado das dependências entre camadas do projeto.</text>
 </svg>
-

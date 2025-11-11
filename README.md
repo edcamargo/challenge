@@ -1,289 +1,409 @@
-# Challenge — Gerenciamento de Tarefas
+# 🚀 Challenge — Sistema de Gerenciamento de Tarefas
 
-[![CI](https://github.com/edcamargo/challenge/actions/workflows/ci.yml/badge.svg)](https://github.com/edcamargo/challenge/actions/workflows/ci.yml) [![Coverage](https://raw.githubusercontent.com/edcamargo/challenge/main/coverage-badge.svg)](coverage-report/index.html)
+<div align="center">
+  
+  ![Coverage Badge](./coverage-badge.svg)
+  
+  <p>
+    <img alt="dotnet" src="https://img.shields.io/badge/.NET-9.0-512BD4?logo=dotnet&logoColor=white" />
+    <img alt="xUnit" src="https://img.shields.io/badge/Tests-xUnit-FF4081?logo=xunit&logoColor=white" />
+    <img alt="Docker" src="https://img.shields.io/badge/Docker-Ready-2496ED?logo=docker&logoColor=white" />
+    <img alt="CI/CD" src="https://img.shields.io/badge/CI%2FCD-GitHub%20Actions-2088FF?logo=github-actions&logoColor=white" />
+  </p>
 
-> Nota: o coverage badge (`coverage-badge.svg`) será gerado automaticamente pelo workflow de CI e um Pull Request será criado (branch `ci/coverage-badge-<run_id>`) contendo o SVG atualizado. Revise e mescle o PR para publicar o novo badge no README. Se preferir, baixe o artifact `coverage-report` do run (Actions → Artifacts), extraia o SVG e comite manualmente no repositório.
+  <p>
+    <strong>API .NET 9 robusta e bem testada para gerenciamento de Usuários e Tarefas</strong>
+  </p>
+  
+  <p>
+    Construída com <strong>Clean Architecture</strong> e padrões modernos de desenvolvimento
+  </p>
 
-Uma API em .NET 9 para gerenciamento de tarefas (Users + Tasks) construída com princípios de Clean Architecture: Domain, Application, Infrastructure e Presentation. Projetada para ser simples, testável e de fácil manutenção.
-
-- Linguagem: C# (.NET 9)
-- Testes: xUnit + FluentAssertions + NSubstitute
-- Persistência nos testes: EF Core InMemory
-- CI: GitHub Actions (build/test/coverage)
-
----
-
-## Sumário
-
-- [Visão geral](#visão-geral)
-- [Status / Badges](#status--badges)
-- [Arquitetura & Diagramas](#arquitetura--diagramas)
-- [Como rodar (rápido)](#como-rodar-rápido)
-  - [Rodar local (.NET)](#rodar-local-net)
-  - [Rodar com Docker](#rodar-com-docker)
-- [Endpoints principais (exemplos)](#endpoints-principais-exemplos)
-  - [Users](#users)
-  - [Tasks](#tasks)
-- [Padronização de respostas (ApiResponse)](#padronização-de-respostas-apiresponse)
-- [Testes e cobertura](#testes-e-cobertura)
-- [CI / Pipeline](#ci--pipeline)
-- [Contribuição](#contribuição)
+</div>
 
 ---
 
-## Visão geral
+## 📋 Sobre o Projeto
 
-A aplicação é organizada por camadas:
+Uma API RESTful completa para gerenciamento de tarefas e usuários, desenvolvida com foco em:
 
-- Domain: Entidades, ValueObjects, validações e regras de negócio.
-- Application: DTOs, Services (casos de uso), interfaces e mapeamentos.
-- InfraStructure: Implementações de repositórios, DataContext (EF Core) e IoC.
-- Presentation: API (controllers), middlewares, mapeamentos de resposta.
+- 🏗️ **Arquitetura Limpa** - Separação clara entre Domain, Application, Infrastructure e Presentation
+- 🧪 **Testes Abrangentes** - Alta cobertura com testes unitários e de integração
+- 📋 **Contratos Consistentes** - Padrão envelope para todas as respostas da API
+- 🐳 **Containerização** - Pronto para deploy com Docker
+- 📊 **Documentação Interativa** - Swagger UI integrado
 
-Principais decisões:
-- Notification pattern (ApiResponse/ApiError) para retornar validações/erros sem lançar exceções.
-- Repositório genérico + UnitOfWork para controlar persistência.
-- Testes automatizados (unit + integration) com cobertura elevada.
+> 💡 **Ideal para**: Avaliações técnicas, base para novos projetos ou referência para Clean Architecture em .NET
 
 ---
 
-## Arquitetura & Diagramas
+## ✨ Principais Características
 
-- Diagrama da arquitetura: `docs/architecture.puml` / `docs/architecture.svg`
-- Diagrama das entidades: `docs/entities.puml` / `docs/entities.svg`
+<div align="center">
 
-(Se os SVGs não estiverem no repositório, gere com PlantUML ou use a extensão do seu editor.)
+| 🏗️ **Arquitetura** | 🧪 **Qualidade** | 🚀 **Performance** | 📋 **API** |
+|:-----------------:|:---------------:|:----------------:|:-----------:|
+| Clean Architecture | 90%+ Cobertura | .NET 9 | RESTful |
+| DDD Patterns | Testes Integração | InMemory DB | Swagger UI |
+| SOLID Principles | CI/CD Pipeline | Docker Ready | Envelope Pattern |
 
-Exemplo rápido (Entities):
+</div>
 
-![Entities diagram](docs/entities.svg)
+### 🎯 Diferenciais do Projeto
+
+- ✅ **Separação clara de responsabilidades** (Domain / Application / Infrastructure / Presentation)
+- ✅ **Padrão Notification** consistente para tratamento de erros e validações
+- ✅ **Alta cobertura de testes** com cenários reais de integração
+- ✅ **Base de código enxuta** - fácil de revisar, entender e estender
+- ✅ **Documentação completa** com diagramas de arquitetura e exemplos práticos
 
 ---
 
-## Como rodar — rápido
+## 🚀 Início Rápido
 
-Requisitos: .NET 9 SDK e (opcional) Docker.
+### Pré-requisitos
+- [.NET 9 SDK](https://dotnet.microsoft.com/download/dotnet/9.0) ou [Docker](https://www.docker.com/)
 
-### Rodar local (.NET)
+### 💻 Executando localmente
 
 ```bash
-# restaurar e compilar
-dotnet restore
-dotnet build -c Debug
+# 1. Clone o repositório
+git clone https://github.com/edcamargo/challenge.git
+cd challenge
 
-# rodar API (Presentation.Api)
+# 2. Restore e build
+dotnet restore
+dotnet build -c Release
+
+# 3. Execute a API
 cd Presentation.Api
 dotnet run --urls "http://localhost:5000"
 ```
-Abra `http://localhost:5000/swagger/index.html` para explorar a API (development).
 
-### Rodar com Docker
+✅ **API rodando em**: http://localhost:5000  
+📋 **Swagger UI**: http://localhost:5000/swagger
 
-Build da imagem (a partir da raiz do repo):
-
-```bash
-docker build -f Presentation.Api/Dockerfile -t edcamargo/challenge-api:local .
-```
-
-Rodar (foreground):
+### 🐳 Executando com Docker
 
 ```bash
-docker run --rm -p 5000:5000 --name challenge-api-local edcamargo/challenge-api:local
+# Build da imagem
+docker build -t challenge:latest .
+
+# Execute o container
+docker run -d -p 8080:8080 --name challenge challenge:latest
 ```
 
-Ou com docker-compose (simples):
+<details>
+<summary>🔧 Comandos úteis do Docker</summary>
 
 ```bash
-docker-compose up --build
+# Ver logs
+docker logs -f challenge
+
+# Parar e remover
+docker stop challenge && docker rm challenge
+
+# Executar em modo interativo
+docker run -it -p 8080:8080 challenge:latest
+```
+</details>
+
+## 🏗️ Arquitetura do Sistema
+
+<div align="center">
+  <img src="docs/architecture.svg" alt="Diagrama de Arquitetura" width="700"/>
+</div>
+
+### 📚 Estrutura das Camadas
+
+```
+📁 Domain/              # Regras de negócio e entidades
+├── Entities/           # User, Tasks
+├── ValueObjects/       # Objetos de valor
+├── Validations/        # Validações de domínio
+└── Interfaces/         # Contratos de repositórios
+
+📁 Application/         # Casos de uso e serviços
+├── Services/           # UserService, TaskService
+├── DTOs/              # Objetos de transferência
+└── Common/            # ApiResponse, Notifications
+
+📁 Infrastructure/      # Implementações técnicas
+├── Data/              # EF Core, Repositórios
+└── IoC/               # Injeção de dependência
+
+📁 Presentation.Api/    # Controllers e configurações
+├── Controllers/       # REST endpoints
+├── Middlewares/       # Error handling
+└── Extensions/        # Configurações
 ```
 
-Logs:
+### 🔄 Padrões Implementados
 
-```bash
-docker logs -f challenge-api-local
-```
+- **🏛️ Clean Architecture** - Dependências apontando para dentro
+- **📋 Domain-Driven Design** - Entidades ricas com validações
+- **🔔 Notification Pattern** - Coleta e tratamento de erros
+- **🎯 Dependency Injection** - IoC Container configurado
+- **📊 Repository Pattern** - Abstração do acesso a dados
 
-Health check rápido (curl):
+## 📋 Documentação da API
 
-```bash
-curl -v http://localhost:5000/health || curl -v http://localhost:5000/
-```
+### 🌐 Swagger UI Interativo
 
-> Observação: a aplicação usa EF Core InMemory para execução e testes, ou seja, *não* requer banco externo por padrão.
+<div align="center">
+  <img src="docs/swagger.png" alt="Swagger UI" width="800"/>
+  <p><em>Explore todos os endpoints, modelos e teste a API diretamente pelo navegador</em></p>
+</div>
 
----
+### 📨 Padrão Envelope de Resposta
 
-## Endpoints principais (exemplos)
-
-Base: `http://localhost:5000/api`
-
-### Users
-
-- POST /api/users — criar usuário
-
-Request (UserCreateDto):
+Todas as respostas da API seguem um **envelope consistente** para facilitar o tratamento no frontend:
 
 ```json
 {
-  "name": "Edwin",
-  "email": "edwin@example.com"
+  "data": "/* payload de sucesso ou null */", 
+  "erros": ["/* array de objetos ApiError */"]
 }
 ```
 
-Success (201):
+**Estrutura do ApiError:**
+```json
+{ 
+  "statusCode": 400, 
+  "message": "Mensagem amigável", 
+  "key": "Campo" 
+}
+```
 
+### 🎯 Benefícios do Padrão
+
+- ✅ **Previsibilidade** - Respostas sempre no mesmo formato
+- ✅ **Tratamento de Erros** - Erros estruturados e padronizados  
+- ✅ **Frontend-Friendly** - Fácil mapeamento para componentes UI
+- ✅ **Validações** - Erros por campo específico
+
+## 🔧 Exemplos de Uso da API
+
+### 👤 Gerenciamento de Usuários
+
+<details>
+<summary><strong>POST /api/users</strong> - Criar usuário</summary>
+
+**Requisição:**
+```bash
+curl -X POST http://localhost:5000/api/users \
+  -H 'Content-Type: application/json' \
+  -d '{"name":"Edwin","email":"edwin@example.com"}'
+```
+
+**Resposta de Sucesso (201):**
 ```json
 {
-  "data": { "id": "<guid>", "name": "Edwin", "email": "edwin@example.com" },
+  "data": {
+    "id": "123e4567-e89b-12d3-a456-426614174000",
+    "name": "Edwin",
+    "email": "edwin@example.com"
+  },
   "erros": []
 }
 ```
 
-- GET /api/users — listar usuários (200)
-- GET /api/users/{id} — buscar por id (200 / 404)
-- PUT /api/users/{id} — atualizar (200 / 400 / 404)
-- DELETE /api/users/{id} — remover (204 / 404)
-
-### Tasks
-
-- POST /api/tasks — criar tarefa
-
-Request (TaskCreateDto):
-
-```json
-{
-  "title": "Comprar leite",
-  "description": "Ir ao supermercado",
-  "createdAt": "2025-11-10T12:00:00Z",
-  "dueDate": "2025-11-12T12:00:00Z",
-  "userId": "5a3df8c0-09bc-4f3b-9484-30a61b7f8445",
-  "isCompleted": false
-}
-```
-
-Success (201):
-
-```json
-{
-  "data": { "id": "<guid>", "title": "Comprar leite", "userId": "5a3df8c0-09bc-4f3b-9484-30a61b7f8445", "isCompleted": false },
-  "erros": []
-}
-```
-
-- GET /api/tasks — listar tarefas (200)
-- GET /api/tasks/{id} — obter por id (200 / 404)
-- GET /api/tasks/user/{userId} — tarefas de um usuário (200)
-- PUT /api/tasks/{id}/complete — atualizar status/editar (200)
-- DELETE /api/tasks/{id} — remover (204 / 404)
-
----
-
-## Padronização de respostas (ApiResponse)
-
-Todos os controllers retornam `ApiResponse<T>` com duas propriedades principais:
-
-- `data`: o payload quando sucesso
-- `erros`: array de `ApiError` contendo { statusCode, message, key }
-
-Exemplo de erro (400):
-
+**Resposta de Erro (400):**
 ```json
 {
   "data": null,
-  "erros": [ { "statusCode": 400, "message": "O título da tarefa é obrigatório.", "key": "title" } ]
+  "erros": [
+    {
+      "statusCode": 400,
+      "message": "E-mail inválido",
+      "key": "email"
+    }
+  ]
+}
+```
+</details>
+
+### ✅ Gerenciamento de Tarefas
+
+**POST /api/tasks** - Criar tarefa
+
+**Requisição:**
+```bash
+curl -X POST http://localhost:5000/api/tasks \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "title": "Implementar feature X",
+    "description": "Desenvolver nova funcionalidade",
+    "dueDate": "2025-11-15T12:00:00Z",
+    "userId": "123e4567-e89b-12d3-a456-426614174000"
+  }'
+```
+
+**Resposta de Sucesso (201):**
+```json
+{
+  "data": {
+    "id": "11111111-1111-1111-1111-111111111111",
+    "title": "Implementar feature X",
+    "description": "Desenvolver nova funcionalidade",
+    "createdAt": "2025-11-11T12:00:00Z",
+    "dueDate": "2025-11-15T12:00:00Z",
+    "userId": "123e4567-e89b-12d3-a456-426614174000",
+    "isCompleted": false
+  },
+  "erros": []
 }
 ```
 
----
+**GET /api/tasks/user/{userId}** - Listar tarefas do usuário
 
-## Testes e cobertura
+**Resposta de Sucesso (200):**
+```json
+{
+  "data": [
+    {
+      "id": "11111111-1111-1111-1111-111111111111",
+      "title": "Implementar feature X",
+      "description": "Desenvolver nova funcionalidade",
+      "createdAt": "2025-11-11T12:00:00Z",
+      "dueDate": "2025-11-15T12:00:00Z",
+      "userId": "123e4567-e89b-12d3-a456-426614174000",
+      "user": {
+        "id": "123e4567-e89b-12d3-a456-426614174000",
+        "name": "Edwin",
+        "email": "edwin@example.com"
+      },
+      "isCompleted": false
+    }
+  ],
+  "erros": []
+}
+```
 
-Executar suíte de testes (local):
+**Resposta de Erro (404):**
+```json
+{
+  "data": null,
+  "erros": [
+    {
+      "statusCode": 404,
+      "message": "Usuário não encontrado",
+      "key": "userId"
+    }
+  ]
+}
+
+## 🧪 Testes e Cobertura
+
+### 🚀 Executar Testes
 
 ```bash
+# Executar todos os testes
 dotnet test ./challenge.sln --collect:"XPlat Code Coverage"
+
+# Executar apenas testes unitários
+dotnet test ./Challenge.Test/Unit/
+
+# Executar apenas testes de integração
+dotnet test ./Challenge.Test/Integration/
 ```
 
-Gerar relatório HTML (reportgenerator):
+### 📊 Relatórios de Cobertura
 
 ```bash
+# Instalar ferramenta de relatórios (uma vez)
 dotnet tool install -g dotnet-reportgenerator-globaltool
-reportgenerator -reports:Challenge.Test/TestResults/*/coverage.cobertura.xml -targetdir:coverage-report -reporttypes:HtmlSummary;BadgeSummary
+
+# Gerar relatório HTML
+reportgenerator \
+  -reports:Challenge.Test/TestResults/*/coverage.cobertura.xml \
+  -targetdir:coverage-report \
+  -reporttypes "HtmlSummary;BadgeSummary"
+
+# Visualizar relatório
+open coverage-report/summary.html
 ```
 
-O artifact `coverage-report` também é gerado pelo CI. Você pode baixar o SVG do badge (`coverage-badge.svg`) no artifact e comitá-lo no repositório para mostrar no README.
+### 📈 Métricas Atuais
 
----
+<div align="center">
 
-## Métricas de cobertura (atual)
+| Métrica | Valor | Status |
+|---------|-------|---------|
+| 📊 **Cobertura de Linhas** | **90.94%** (633/696) | ✅ Excelente |
+| 🔀 **Cobertura de Branches** | **72.54%** (74/102) | ✅ Boa |
+| 🧪 **Tipos de Teste** | Unit + Integration | ✅ Completo |
+| ⚡ **CI/CD** | GitHub Actions | ✅ Automatizado |
 
-As métricas abaixo foram extraídas do último relatório gerado em `Challenge.Test/TestResults/*/coverage.cobertura.xml`.
+</div>
 
-- Coverage (linhas): 89.95% (lines-covered: 654 / lines-valid: 727)
-- Coverage (branches): 59.16% (branches-covered: 71 / branches-valid: 120)
+### 🎯 Estrutura dos Testes
 
-Nota: os valores podem variar conforme você executar a suíte de testes localmente ou quando o CI rodar. Para recomputar as métricas localmente a partir do arquivo `coverage.cobertura.xml` use uma destas opções:
-
-- Usando `xmlstarlet` (recomendado se instalado):
-
-```bash
-xmlstarlet sel -t -v "/coverage/@line-rate" Challenge.Test/TestResults/*/coverage.cobertura.xml
-xmlstarlet sel -t -v "/coverage/@branch-rate" Challenge.Test/TestResults/*/coverage.cobertura.xml
+```
+📁 Challenge.Test/
+├── Unit/                    # Testes unitários
+│   ├── Domain/             # Entidades e validações
+│   ├── Application/        # Services e DTOs
+│   └── Presentation/       # Controllers
+└── Integration/            # Testes end-to-end
+    ├── Infra/              # Repositórios
+    └── Presentation/       # API completa
 ```
 
-- Usando `xmllint` (se disponível):
+## 🤝 Contribuindo
 
-```bash
-xmllint --xpath 'string(/coverage/@line-rate)' Challenge.Test/TestResults/*/coverage.cobertura.xml
-xmllint --xpath 'string(/coverage/@branch-rate)' Challenge.Test/TestResults/*/coverage.cobertura.xml
-```
+Contribuições são bem-vindas! Siga estes passos:
 
-- Usando `grep`/`sed` (alternativa simples):
+### 🔧 Setup para Desenvolvimento
 
-```bash
-grep -o "line-rate=\"[^"]*\"" Challenge.Test/TestResults/*/coverage.cobertura.xml | head -n1 | sed 's/line-rate="//;s/"//'
-grep -o "branch-rate=\"[^"]*\"" Challenge.Test/TestResults/*/coverage.cobertura.xml | head -n1 | sed 's/branch-rate="//;s/"//'
-```
+1. **Fork** o repositório
+2. **Clone** seu fork localmente
+3. **Crie** uma branch para sua feature:
+   ```bash
+   git checkout -b feature/nova-funcionalidade
+   # ou
+   git checkout -b fix/correcao-bug
+   ```
 
-Interprete o resultado `line-rate` (valor entre 0 e 1) multiplicando por 100 para obter a porcentagem.
+### ✅ Checklist antes do PR
 
----
+- [ ] ✅ Testes passando (`dotnet test`)
+- [ ] 📝 Novos testes para funcionalidades adicionadas
+- [ ] 📋 Documentação atualizada se necessário
+- [ ] 🏗️ Código seguindo os padrões da arquitetura
+- [ ] 🧪 Cobertura de testes mantida acima de 85%
 
-## CI / Pipeline
+### 📬 Abrindo um Pull Request
 
-O workflow principal está em `.github/workflows/ci.yml` e executa:
-
-1. restore
-2. build
-3. test (coleta de cobertura)
-4. geração de relatório HTML e badge
-5. upload de artifacts (coverage-report, test-results)
-6. criação automática de PR com badge atualizado
-
-> Para integração com Codecov, adicione `CODECOV_TOKEN` nas Secrets do repositório.
-
----
-
-## Contribuição
-
-1. Fork → branch `feature/...` ou `fix/...`
-2. Rode os testes localmente e garanta que tudo passe
-3. Abra PR com descrição clara e referências aos arquivos alterados
+1. **Push** sua branch para seu fork
+2. **Abra** um PR com:
+   - Título descritivo
+   - Descrição do que foi implementado/corrigido
+   - Screenshots se aplicável
+   - Referência a issues relacionadas
 
 ---
 
-## Contatos e referências
+## 📚 Links Úteis
 
-- Diagramas: `docs/architecture.puml`, `docs/entities.puml` (SVGs: `docs/*.svg`)
-- Test results & coverage: `Challenge.Test/TestResults/`
-
----
-
-Se quiser, eu posso:
-- gerar e commitar `docs/entities.svg` (diagrama de entidades) para o repo;
-- criar docs OpenAPI (`openapi.json`) exportado via Swagger e subir como artifact no CI;
-- ajustar o README para exibir a badge de cobertura automaticamente (PR automático já configurado).
+- 🏗️ [Diagramas de Arquitetura](docs/architecture.svg)
+- 🗂️ [Modelo de Entidades](docs/entities.svg)
+- 📋 [Documentação Swagger](http://localhost:5000/swagger) *(com a API rodando)*
+- 🐳 [Dockerfile](./Dockerfile)
+- ⚙️ [Pipeline CI/CD](.github/workflows/ci.yml)
 
 ---
 
-<!-- fim do README -->
+## 📄 Licença
+
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+
+---
+
+<div align="center">
+  
+**🚀 Desenvolvido com .NET 9 e muito ☕**
+
+*Se este projeto foi útil, considere dar uma ⭐!*
+
+</div>

@@ -8,6 +8,6 @@ internal class EmailValidator : AbstractValidator<Email>
     public EmailValidator()
     {
         RuleFor(e => e.Endereco)
-            .Must(Email.IsValid).WithMessage("O e-mail do cliente está em formato inválido.");
+            .Must(Email.IsValid).WithMessage("O e-mail do usuário está em formato inválido.");
     }
 }
