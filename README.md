@@ -1,175 +1,265 @@
-<!-- Badge de cobertura local -->
-![coverage badge](./coverage-badge.svg)
+# 🚀 Challenge — Sistema de Gerenciamento de Tarefas
 
-# Challenge — Gerenciamento de Tarefas
+<div align="center">
+  
+  ![Coverage Badge](./coverage-badge.svg)
+  
+  <p>
+    <img alt="dotnet" src="https://img.shields.io/badge/.NET-9.0-512BD4?logo=dotnet&logoColor=white" />
+    <img alt="xUnit" src="https://img.shields.io/badge/Tests-xUnit-FF4081?logo=xunit&logoColor=white" />
+    <img alt="Docker" src="https://img.shields.io/badge/Docker-Ready-2496ED?logo=docker&logoColor=white" />
+    <img alt="CI/CD" src="https://img.shields.io/badge/CI%2FCD-GitHub%20Actions-2088FF?logo=github-actions&logoColor=white" />
+  </p>
 
-<p align="center">
-  <img alt="dotnet" src="https://img.shields.io/badge/.NET-9.0-512BD4?logo=dotnet&logoColor=white" />
-  <img alt="xUnit" src="https://img.shields.io/badge/Tests-xUnit-FF4081?logo=xunit&logoColor=white" />
-</p>
+  <p>
+    <strong>API .NET 9 robusta e bem testada para gerenciamento de Usuários e Tarefas</strong>
+  </p>
+  
+  <p>
+    Construída com <strong>Clean Architecture</strong> e padrões modernos de desenvolvimento
+  </p>
 
----
-
-Uma API .NET 9 compacta e bem testada para gerenciamento de Usuários e Tarefas — construída com separação clara entre as camadas Domain, Application e Presentation. Ideal para avaliações técnicas, backend inicial ou referência para padrões de arquitetura limpa.
-
-> TL;DR: base de código pequena e legível com testes sólidos, envelope de API consistente (data + erros) e diagramas de arquitetura claros.
-
----
-
-## Por que um tech lead vai gostar
-
-- ✅ Separação clara de responsabilidades (Domain / Application / Infra / Presentation)
-- ✅ Padrão Notification / ApiResponse para contratos consistentes com clientes
-- ✅ Alta cobertura de testes e testes de integração automatizados (InMemory)
-- ✅ Superfície pequena para revisão — fácil de entender e estender
+</div>
 
 ---
 
-## Links rápidos
+## 📋 Sobre o Projeto
 
-- Arquitetura: `docs/architecture.svg`
-- Entidades: `docs/entities.svg`
-- Executar localmente: Presentation.Api (dotnet run)
-- Docker: build & run (veja Início Rápido)
+Uma API RESTful completa para gerenciamento de tarefas e usuários, desenvolvida com foco em:
 
-<!-- Título e descrição para a imagem do Swagger -->
-### Documentação interativa (Swagger UI)
-<p align="center">
-  <em>Explore os endpoints, modelos e exemplos interativos da API diretamente pelo Swagger UI.</em>
-</p>
-<p align="center" style="margin-top:320px;">
-  <img src="docs/swagger.png" alt="Swagger UI" style="max-width:100%;height:auto;" />
-</p>
+- 🏗️ **Arquitetura Limpa** - Separação clara entre Domain, Application, Infrastructure e Presentation
+- 🧪 **Testes Abrangentes** - Alta cobertura com testes unitários e de integração
+- 📋 **Contratos Consistentes** - Padrão envelope para todas as respostas da API
+- 🐳 **Containerização** - Pronto para deploy com Docker
+- 📊 **Documentação Interativa** - Swagger UI integrado
 
-## Início Rápido
+> 💡 **Ideal para**: Avaliações técnicas, base para novos projetos ou referência para Clean Architecture em .NET
 
-Requisitos: .NET 9 SDK (dev) ou Docker (container).
+---
 
-Executar localmente (desenvolvimento):
+## ✨ Principais Características
+
+<div align="center">
+
+| 🏗️ **Arquitetura** | 🧪 **Qualidade** | 🚀 **Performance** | 📋 **API** |
+|:-----------------:|:---------------:|:----------------:|:-----------:|
+| Clean Architecture | 90%+ Cobertura | .NET 9 | RESTful |
+| DDD Patterns | Testes Integração | InMemory DB | Swagger UI |
+| SOLID Principles | CI/CD Pipeline | Docker Ready | Envelope Pattern |
+
+</div>
+
+### 🎯 Por que Tech Leads vão adorar
+
+- ✅ **Separação clara de responsabilidades** (Domain / Application / Infrastructure / Presentation)
+- ✅ **Padrão Notification** consistente para tratamento de erros e validações
+- ✅ **Alta cobertura de testes** com cenários reais de integração
+- ✅ **Base de código enxuta** - fácil de revisar, entender e estender
+- ✅ **Documentação completa** com diagramas de arquitetura e exemplos práticos
+
+---
+
+## 🚀 Início Rápido
+
+### Pré-requisitos
+- [.NET 9 SDK](https://dotnet.microsoft.com/download/dotnet/9.0) ou [Docker](https://www.docker.com/)
+
+### 💻 Executando localmente
 
 ```bash
-# da raiz do repositório
+# 1. Clone o repositório
+git clone https://github.com/edcamargo/challenge.git
+cd challenge
+
+# 2. Restore e build
 dotnet restore
-dotnet build -c Debug
+dotnet build -c Release
+
+# 3. Execute a API
 cd Presentation.Api
 dotnet run --urls "http://localhost:5000"
 ```
 
-Abrir: http://localhost:5000/swagger/index.html
+✅ **API rodando em**: http://localhost:5000  
+📋 **Swagger UI**: http://localhost:5000/swagger
 
-Executar com Docker (build + run):
+### 🐳 Executando com Docker
 
 ```bash
+# Build da imagem
 docker build -t challenge:latest .
 
+# Execute o container
 docker run -d -p 8080:8080 --name challenge challenge:latest
 ```
 
-Dicas:
+<details>
+<summary>🔧 Comandos úteis do Docker</summary>
 
 ```bash
-# logs
+# Ver logs
 docker logs -f challenge
-# parar + remover
+
+# Parar e remover
 docker stop challenge && docker rm challenge
+
+# Executar em modo interativo
+docker run -it -p 8080:8080 challenge:latest
+```
+</details>
+
+## 🏗️ Arquitetura do Sistema
+
+<div align="center">
+  <img src="docs/architecture.svg" alt="Diagrama de Arquitetura" width="700"/>
+</div>
+
+### 📚 Estrutura das Camadas
+
+```
+📁 Domain/              # Regras de negócio e entidades
+├── Entities/           # User, Tasks
+├── ValueObjects/       # Objetos de valor
+├── Validations/        # Validações de domínio
+└── Interfaces/         # Contratos de repositórios
+
+📁 Application/         # Casos de uso e serviços
+├── Services/           # UserService, TaskService
+├── DTOs/              # Objetos de transferência
+└── Common/            # ApiResponse, Notifications
+
+📁 Infrastructure/      # Implementações técnicas
+├── Data/              # EF Core, Repositórios
+└── IoC/               # Injeção de dependência
+
+📁 Presentation.Api/    # Controllers e configurações
+├── Controllers/       # REST endpoints
+├── Middlewares/       # Error handling
+└── Extensions/        # Configurações
 ```
 
----
+### 🔄 Padrões Implementados
 
-## Destaques para Tech Lead (resumo)
+- **🏛️ Clean Architecture** - Dependências apontando para dentro
+- **📋 Domain-Driven Design** - Entidades ricas com validações
+- **🔔 Notification Pattern** - Coleta e tratamento de erros
+- **🎯 Dependency Injection** - IoC Container configurado
+- **📊 Repository Pattern** - Abstração do acesso a dados
 
-- Arquitetura: em camadas, DI na raiz de composição (`InfraStructure.Ioc`).
-- Domain: Entidades + ValueObjects com validação interna.
-- Application: Services implementam regras de negócio e retornam `ApiResponse<T>` (resultados de operação + notificações).
-- Presentation: controllers mínimos que mapeiam para services e retornam respostas envelopadas.
+## 📋 Documentação da API
 
-Se você for revisar este repositório, verifique rapidamente:
+### 🌐 Swagger UI Interativo
 
-1. Entidades e validações de domínio (Domain/**)
-2. Services da aplicação (Application/**) — onde vivem as regras de negócio
-3. Controllers (Presentation.Api/Controllers) — devem ser enxutos
-4. Testes (Challenge.Test) — cobertura unit + integration e exemplos
+<div align="center">
+  <img src="docs/swagger.png" alt="Swagger UI" width="800"/>
+  <p><em>Explore todos os endpoints, modelos e teste a API diretamente pelo navegador</em></p>
+</div>
 
----
+### 📨 Padrão Envelope de Resposta
 
-## Arquitetura (visual)
-
-![Diagrama de arquitetura](docs/architecture.svg)
-
----
-
-## Contrato da API — Padrão envelope
-
-Todos os endpoints retornam o mesmo envelope JSON:
+Todas as respostas da API seguem um **envelope consistente** para facilitar o tratamento no frontend:
 
 ```json
 {
-  "data": /* payload de sucesso ou null */, 
-  "erros": [ /* zero ou mais objetos ApiError */ ]
+  "data": "/* payload de sucesso ou null */", 
+  "erros": ["/* array de objetos ApiError */"]
 }
 ```
 
-Formato de `ApiError`:
-
+**Estrutura do ApiError:**
 ```json
-{ "statusCode": 400, "message": "Mensagem amigável", "key": "Campo" }
+{ 
+  "statusCode": 400, 
+  "message": "Mensagem amigável", 
+  "key": "Campo" 
+}
 ```
 
-### Por que adotar este padrão
+### 🎯 Benefícios do Padrão
 
-- Respostas previsíveis para os clientes.
-- Tratamento de erros uniforme e simples de traduzir para a UI.
-- Um único ponto para mapear resultados de validação em erros estruturados.
+- ✅ **Previsibilidade** - Respostas sempre no mesmo formato
+- ✅ **Tratamento de Erros** - Erros estruturados e padronizados  
+- ✅ **Frontend-Friendly** - Fácil mapeamento para componentes UI
+- ✅ **Validações** - Erros por campo específico
 
----
+## 🔧 Exemplos de Uso da API
 
-## Exemplos de requisições e respostas
+### 👤 Gerenciamento de Usuários
 
-Criar usuário (POST /api/users)
+<details>
+<summary><strong>POST /api/users</strong> - Criar usuário</summary>
 
-Requisição:
-
+**Requisição:**
 ```bash
 curl -X POST http://localhost:5000/api/users \
   -H 'Content-Type: application/json' \
   -d '{"name":"Edwin","email":"edwin@example.com"}'
 ```
 
-Sucesso (201):
-
+**Resposta de Sucesso (201):**
 ```json
 {
-  "data": { "id": "<guid>", "name":"Edwin", "email":"edwin@example.com" },
+  "data": {
+    "id": "123e4567-e89b-12d3-a456-426614174000",
+    "name": "Edwin",
+    "email": "edwin@example.com"
+  },
   "erros": []
 }
 ```
 
-Erro de validação (400):
-
+**Resposta de Erro (400):**
 ```json
 {
   "data": null,
-  "erros": [ { "statusCode": 400, "message": "E-mail inválido", "key": "email" } ]
+  "erros": [
+    {
+      "statusCode": 400,
+      "message": "E-mail inválido",
+      "key": "email"
+    }
+  ]
 }
 ```
+</details>
 
-Criar tarefa (POST /api/tasks) — payload conforme `TaskCreateDto`; a resposta segue o mesmo envelope.
+### ✅ Gerenciamento de Tarefas
 
-Listar tarefas por usuário (GET /api/tasks/user/{userId}) — exemplo de retorno:
+<details>
+<summary><strong>POST /api/tasks</strong> - Criar tarefa</summary>
 
-Sucesso (200):
+**Requisição:**
+```bash
+curl -X POST http://localhost:5000/api/tasks \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "title": "Implementar feature X",
+    "description": "Desenvolver nova funcionalidade",
+    "dueDate": "2025-11-15T12:00:00Z",
+    "userId": "123e4567-e89b-12d3-a456-426614174000"
+  }'
+```
+</details>
 
+<details>
+<summary><strong>GET /api/tasks/user/{userId}</strong> - Listar tarefas do usuário</summary>
+
+**Resposta de Sucesso (200):**
 ```json
 {
   "data": [
     {
       "id": "11111111-1111-1111-1111-111111111111",
-      "title": "Comprar leite",
-      "description": "Ir ao mercado",
-      "createdAt": "2025-11-01T12:00:00Z",
-      "dueDate": "2025-11-02T12:00:00Z",
-      "userId": "22222222-2222-2222-2222-222222222222",
-      "user": { "id": "22222222-2222-2222-2222-222222222222", "name": "Owner", "email": "owner@example.com" },
+      "title": "Implementar feature X",
+      "description": "Desenvolver nova funcionalidade",
+      "createdAt": "2025-11-11T12:00:00Z",
+      "dueDate": "2025-11-15T12:00:00Z",
+      "userId": "123e4567-e89b-12d3-a456-426614174000",
+      "user": {
+        "id": "123e4567-e89b-12d3-a456-426614174000",
+        "name": "Edwin",
+        "email": "edwin@example.com"
+      },
       "isCompleted": false
     }
   ],
@@ -177,14 +267,20 @@ Sucesso (200):
 }
 ```
 
-Erro (400 ou 404):
-
+**Resposta de Erro (404):**
 ```json
 {
   "data": null,
-  "erros": [ { "statusCode": 404, "message": "Usuário não encontrado", "key": "userId" } ]
+  "erros": [
+    {
+      "statusCode": 404,
+      "message": "Usuário não encontrado",
+      "key": "userId"
+    }
+  ]
 }
 ```
+</details>
 
 ---
 
