@@ -1,10 +1,32 @@
-# CI workflow disabled
-# The original CI workflow was intentionally removed/disabled per project owner request.
-# To restore the CI, revert this file to the previous version or restore from VCS history.
+# This workflow will build a .NET project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
 
-# Empty trigger -> workflow will not run
-on: []
+name: Challenge Application CI
 
-# No jobs defined while CI is disabled
-# If you want to re-enable, replace this file with the previous .github/workflows/ci.yml content
-# or add a new workflow file under .github/workflows/ with the desired jobs.
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 9.0.x
+    - name: Restore dependencies
+      run: dotnet restore challenge.sln
+    - name: Build
+      run: dotnet build challenge.sln --no-restore --configuration Release
+    - name: Test
+      run: dotnet test challenge.sln --no-build --verbosity normal --configuration Release --collect:"XPlat Code Coverage"
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@v4
+      with:
+        fail_ci_if_error: false
+        verbose: true

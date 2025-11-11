@@ -3,7 +3,7 @@
 
 # Challenge — Gerenciamento de Tarefas
 
-<p align="center">![img.png](img.png)
+<p align="center">
   <img alt="dotnet" src="https://img.shields.io/badge/.NET-9.0-512BD4?logo=dotnet&logoColor=white" />
   <img alt="xUnit" src="https://img.shields.io/badge/Tests-xUnit-FF4081?logo=xunit&logoColor=white" />
 </p>
